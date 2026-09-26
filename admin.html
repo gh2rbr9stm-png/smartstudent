@@ -1,0 +1,851 @@
+<!DOCTYPE html><html lang="ta"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin PDF Management — SmartStudent - Grade 09 PDFs</title>
+<meta name="description" content="Administrator-only PDF management specification for SmartStudent publishing, metadata and Google Drive integration.">
+<meta name="pd:project" content="SmartStudent - Grade 09 PDFs">
+<style data-pd-baseline="">button,input,select,textarea{font:inherit;color:inherit;line-height:inherit}textarea{display:block;resize:vertical}button,input,select,textarea{box-sizing:border-box;max-width:100%}textarea,select,input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]){padding:.55em .7em;border:1px solid color-mix(in srgb,currentColor 28%,transparent);border-radius:.4rem;background:transparent}</style>
+<style data-pd-page="">
+.admin-page {
+  padding: 56px 0 24px;
+}
+
+.admin-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr);
+  gap: 32px;
+  align-items: stretch;
+  margin-bottom: 48px;
+}
+
+.admin-hero h1 {
+  max-width: 760px;
+  margin: 0 0 18px;
+  font-size: clamp(2.4rem, 5vw, 4.7rem);
+  line-height: 1.02;
+  letter-spacing: -.06em;
+}
+
+.admin-lead {
+  max-width: 720px;
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+}
+
+.admin-boundary {
+  position: relative;
+  padding: 28px;
+  overflow: hidden;
+  color: var(--ink);
+  background: var(--mist);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.admin-boundary::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 7px;
+  background: var(--yellow);
+}
+
+.admin-lock {
+  display: inline-grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  margin-bottom: 20px;
+  color: var(--ink);
+  background: var(--yellow);
+  border-radius: 14px;
+  font-size: 1.4rem;
+}
+
+.admin-boundary h2 {
+  margin: 0 0 10px;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.admin-boundary p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.admin-section {
+  margin-top: 64px;
+}
+
+.admin-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+.admin-section-heading h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.2vw, 2.7rem);
+  line-height: 1.1;
+  letter-spacing: -.045em;
+}
+
+.admin-section-heading p {
+  max-width: 520px;
+  margin: 0;
+  color: var(--muted);
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--paper);
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.admin-table th {
+  color: var(--muted);
+  background: var(--mist);
+  font-size: .78rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.admin-empty td {
+  padding: 36px 24px;
+  text-align: center;
+}
+
+.admin-empty strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.1rem;
+}
+
+.admin-empty span {
+  display: block;
+  color: var(--muted);
+}
+
+.admin-state {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  color: var(--muted);
+  background: var(--mist);
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.admin-vocabulary {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.admin-vocabulary-card {
+  padding: 26px;
+}
+
+.admin-vocabulary-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+.admin-vocabulary-card > p {
+  margin: 0 0 20px;
+  color: var(--muted);
+}
+
+.admin-definition-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.admin-definition-list div {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-definition-list div:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.admin-definition-list dt {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.admin-definition-list dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.admin-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-chip-list li {
+  padding: 7px 11px;
+  color: var(--teal-dark);
+  background: var(--mist);
+  border-radius: 9px;
+  font-size: .9rem;
+  font-weight: 700;
+}
+
+.admin-state-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.admin-state-card {
+  min-height: 170px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--teal);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.admin-state-card:nth-child(2) {
+  border-top-color: var(--yellow);
+}
+
+.admin-state-card:nth-child(3) {
+  border-top-color: var(--muted);
+}
+
+.admin-state-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+.admin-state-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.admin-workflow {
+  display: grid;
+  grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.admin-workflow-intro {
+  padding-right: 24px;
+}
+
+.admin-workflow-intro h2 {
+  margin: 0 0 12px;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -.045em;
+}
+
+.admin-workflow-intro p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.admin-steps {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: workflow;
+}
+
+.admin-steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--paper);
+}
+
+.admin-steps li::before {
+  counter-increment: workflow;
+  content: counter(workflow);
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  color: var(--ink);
+  background: var(--yellow);
+  border-radius: 50%;
+  font-weight: 900;
+}
+
+.admin-steps strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.admin-steps span {
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.admin-capability-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-capability-table th,
+.admin-capability-table td {
+  padding: 15px 14px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.admin-capability-table th {
+  color: var(--muted);
+  font-size: .78rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.admin-capability-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.admin-capability-table td:first-child {
+  width: 20%;
+  font-weight: 800;
+}
+
+.admin-capability-table td:nth-child(2) {
+  width: 24%;
+  color: var(--teal-dark);
+  font-weight: 800;
+}
+
+.admin-capability-table td:last-child {
+  color: var(--muted);
+}
+
+.admin-notice {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: center;
+  padding: 28px;
+  color: var(--ink);
+  background: #fff8e7;
+  border: 1px solid #efd487;
+  border-radius: var(--radius);
+}
+
+.admin-notice h2 {
+  margin: 0 0 8px;
+  font-size: 1.45rem;
+}
+
+.admin-notice p {
+  max-width: 780px;
+  margin: 0;
+  color: var(--muted);
+}
+
+.admin-notice .button {
+  white-space: normal;
+}
+
+.admin-footnote {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+@media (max-width: 860px) {
+  .admin-hero,
+  .admin-vocabulary,
+  .admin-workflow {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-workflow-intro {
+    padding-right: 0;
+  }
+
+  .admin-state-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-notice {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .admin-page {
+    padding-top: 36px;
+  }
+
+  .admin-boundary,
+  .admin-vocabulary-card,
+  .admin-notice {
+    padding: 20px;
+  }
+
+  .admin-definition-list div {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+
+  .admin-capability-table {
+    display: block;
+    overflow-x: auto;
+    min-width: 620px;
+  }
+}
+</style>
+<style id="pd-ds" data-pd-shared="design-system">:root {
+  --ink: #082f49;
+  --teal: #0f766e;
+  --teal-dark: #095c58;
+  --yellow: #f4b942;
+  --mist: #e8f1f2;
+  --line: #d7e4e5;
+  --paper: #ffffff;
+  --muted: #55717a;
+  --shadow: 0 14px 36px rgba(8, 47, 73, .10);
+  --radius: 18px;
+  --content: 1180px;
+  --sans: "Noto Sans Tamil", "Noto Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+img, svg { max-width: 100%; }
+a { color: inherit; }
+button, input { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.container {
+  width: min(calc(100% - 32px), var(--content));
+  margin-inline: auto;
+}
+.site-header {
+  position: relative;
+  z-index: 5;
+  border-bottom: 1px solid rgba(215, 228, 229, .9);
+  background: rgba(255,255,255,.96);
+}
+.header-inner {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-block: 14px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  font-size: 1.2rem;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  color: var(--ink);
+  background: var(--yellow);
+  font-weight: 900;
+}
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px 18px;
+  flex-wrap: wrap;
+}
+.site-nav a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: .92rem;
+  font-weight: 700;
+  transition: color .2s ease;
+}
+.site-nav a:hover, .site-nav a:focus-visible { color: var(--teal); }
+
+.button {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  text-decoration: none;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+.button:hover, .button:focus-visible { transform: translateY(-2px); }
+.button-primary { color: var(--ink); background: var(--yellow); }
+.button-primary:hover, .button-primary:focus-visible { background: #ffd166; }
+.button-secondary { color: var(--teal-dark); background: var(--paper); border-color: var(--line); }
+.button-secondary:hover, .button-secondary:focus-visible { border-color: var(--teal); }
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--teal);
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.section-heading { max-width: 650px; }
+.section-heading h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  line-height: 1.12;
+  letter-spacing: -.045em;
+}
+.section-heading p { margin: 0; color: var(--muted); }
+.surface {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.tag {
+  display: inline-flex;
+  padding: 4px 9px;
+  border-radius: 99px;
+  color: var(--teal-dark);
+  background: var(--mist);
+  font-size: .76rem;
+  font-weight: 800;
+}
+.language-toggle {
+  display: inline-flex;
+  padding: 4px;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 99px;
+  background: rgba(255,255,255,.12);
+}
+.language-toggle button {
+  min-height: 34px;
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 99px;
+  color: rgba(255,255,255,.75);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 800;
+}
+.language-toggle button[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--yellow);
+}
+.site-footer {
+  margin-top: 80px;
+  color: rgba(255,255,255,.8);
+  background: var(--ink);
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 28px;
+  flex-wrap: wrap;
+  padding-block: 34px;
+}
+.footer-inner p { max-width: 430px; margin: 0; }
+.footer-inner a { color: white; text-decoration: none; font-weight: 700; }
+.footer-note { color: rgba(255,255,255,.58); font-size: .9rem; }
+
+@media (max-width: 720px) {
+  .header-inner { align-items: flex-start; }
+  .site-nav { width: 100%; gap: 8px 14px; }
+  .site-nav a { font-size: .84rem; }
+  .container { width: min(calc(100% - 24px), var(--content)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}</style>
+<style data-pd-corrections="">fieldset>legend{float:none!important}</style>
+</head>
+<body data-pageduo-ele-id="e_gB7251mRVzVN">
+<header class="site-header" data-pageduo-ele-id="e_sMO3YUpGr13e">
+  <div class="container header-inner" data-pageduo-ele-id="e_hC231omQbqld">
+    <a class="brand" href="index.html" aria-label="SmartStudent home" data-pageduo-ele-id="e_T115XXPpxh1l">
+      <span class="brand-mark" aria-hidden="true" data-pageduo-ele-id="e_ZKQGdVe6Kzx1">S9</span>
+      <span data-pageduo-ele-id="e_vRqAOqjCWmLw">SmartStudent</span>
+    </a>
+    <nav class="site-nav" aria-label="Main navigation" data-pageduo-ele-id="e_yR6tZg7QTzKN">
+      <a href="index.html" title="Home" data-pageduo-ele-id="e_ehnu9qFmyXgL">Home</a>
+      <a href="subjects.html" title="Subjects" data-pageduo-ele-id="e_xKOipH49acpk">Subjects</a>
+      <a href="pdf-library.html" title="PDF Library" data-pageduo-ele-id="e_cTygF7o25brM">PDF Library</a>
+      <a href="pdf-preview.html" title="PDF Preview" data-pageduo-ele-id="e_Exqtyw5B2Yhl">PDF Preview</a>
+      <a href="admin.html" title="Admin" aria-current="page" data-pageduo-ele-id="e_0Bz11XTrSGDp">Admin</a>
+    </nav>
+  </div>
+</header>
+<main class="admin-page" data-pageduo-ele-id="e_tHl5zVAxB2Ps">
+  <div class="container" data-pageduo-ele-id="e_R6fxOOFvkCeA">
+    <section class="admin-hero" aria-labelledby="admin-title" data-pageduo-ele-id="e_uTSW165Etl4c">
+      <div data-pageduo-ele-id="e_GWMuWTUD0dVf">
+        <p class="eyebrow" data-pageduo-ele-id="e_iuUVQI3TETff">வழிகாட்டல் பக்கம்</p>
+        <h1 id="admin-title" data-pageduo-ele-id="e_Nsq2WJMqCQnf">வெளியிடப்படும் சரியான PDF-களை மாணவர்களிடம் கொண்டு சேர்ப்பது எப்படி?</h1>
+        <p class="admin-lead" data-pageduo-ele-id="e_i3TPVRUI3oW8">இந்தப் பக்கம் Google Drive அல்லது PDF catalogue-ஐ நேரடியாக மாற்றாது. மாணவர்களுக்கு வெளியிடப்பட்ட PDF-கள் மட்டுமே student-facing library-யில் தோன்றும். தயாரித்தல், metadata சரிபார்த்தல் மற்றும் வெளியிடுதல் போன்ற நிர்வாகப் பணிகள் பாதுகாக்கப்பட்ட வெளிப்புற நிர்வாகச் செயல்முறையில் நடைபெற வேண்டும்.</p>
+      </div>
+
+      <aside class="admin-boundary" aria-labelledby="boundary-title" data-pageduo-ele-id="e_YmmAE2p8ukDe">
+        <span class="admin-lock" aria-hidden="true" data-pageduo-ele-id="e_Md5G5PtAkkqR">⌑</span>
+        <h2 id="boundary-title" data-pageduo-ele-id="e_uDXjOiRYyQIQ">பாதுகாப்பான எல்லை</h2>
+        <p data-pageduo-ele-id="e_PIDEChK42ZPp">இந்தப் பக்கம் படிக்க மட்டுமே. இங்கு login, password, file upload, Google Drive credentials, metadata editing அல்லது publishing action எதுவும் செயல்படுத்தப்படாது.</p>
+      </aside>
+    </section>
+
+    <section class="admin-section" aria-labelledby="management-title" data-pageduo-ele-id="e_1eRHRaxMuDVB">
+      <div class="admin-section-heading" data-pageduo-ele-id="e_iFHKt8pOn1Ib">
+        <div data-pageduo-ele-id="e_AcljxOEZp2ky">
+          <p class="eyebrow" data-pageduo-ele-id="e_oIG86BtRmQ74">முதல் படி</p>
+          <h2 id="management-title" data-pageduo-ele-id="e_aE72U465CQV8">இது எப்படி வேலை செய்கிறது?</h2>
+        </div>
+        <p data-pageduo-ele-id="e_px2JTJlB5sx3">வெளிப்புற நிர்வாகி PDF-ஐத் தயாரித்து, தேவையான தகவல்களைச் சரிபார்த்து, வெளியிடப்பட்ட catalogue-ல் சேர்க்கிறார்.</p>
+      </div>
+
+      <div class="admin-vocabulary" data-pageduo-ele-id="e_c89flJ5hwmgb">
+        <article class="surface admin-vocabulary-card" data-pageduo-ele-id="e_HKco4Bw7C87j">
+          <h3 data-pageduo-ele-id="e_b1whIMYGGTTM">வெளிப்புற நிர்வாகச் செயல்முறை</h3>
+          <p data-pageduo-ele-id="e_9NEB2es4aPNN">PDF மற்றும் அதன் பதிவுத் தகவல்கள் பாதுகாக்கப்பட்ட நிர்வாக சூழலில் தயாரிக்கப்படுகின்றன. இந்த தகவல் பக்கம் அந்தச் செயல்முறையை மட்டும் விளக்குகிறது; catalogue-ஐ மாற்றுவதில்லை.</p>
+          <dl class="admin-definition-list" data-pageduo-ele-id="e_obTwlfIPX4xQ">
+            <div data-pageduo-ele-id="e_1kchGSAFL16q">
+              <dt data-pageduo-ele-id="e_MFvsKF1MEASy">தயாரிப்பு</dt>
+              <dd data-pageduo-ele-id="e_Deq4QviQupFS">தேவையான PDF-ஐ நிர்வாகி தயார் செய்கிறார்</dd>
+            </div>
+            <div data-pageduo-ele-id="e_A0ybBihVgh1K">
+              <dt data-pageduo-ele-id="e_OI6vjkKPKUYx">சரிபார்ப்பு</dt>
+              <dd data-pageduo-ele-id="e_FkQHN80IJRiz">PDF மற்றும் metadata முழுமையாக உள்ளதா எனப் பார்க்கப்படுகிறது</dd>
+            </div>
+            <div data-pageduo-ele-id="e_IKV8wTKYxKpV">
+              <dt data-pageduo-ele-id="e_pFRf2hZ349qg">வெளியீடு</dt>
+              <dd data-pageduo-ele-id="e_34pCBjQze4DH">Published catalogue-ல் மட்டும் பதிவு சேர்க்கப்படுகிறது</dd>
+            </div>
+          </dl>
+        </article>
+
+        <article class="surface admin-vocabulary-card" aria-labelledby="subjects-title" data-pageduo-ele-id="e_IdLnlrRISXLy">
+          <h3 id="subjects-title" data-pageduo-ele-id="e_5bdOipmUZIjU">மாணவர் library-யின் அடிப்படை விதி</h3>
+          <p data-pageduo-ele-id="e_SHVhlYEaHHEU">மாணவர்கள் பயன்படுத்த வேண்டிய பொருட்கள் Published நிலையில் இருக்கும் பதிவுகள் மட்டுமே. Draft, Unpublished அல்லது முழுமையற்ற பதிவுகள் student-facing library-யில் காட்டப்படக்கூடாது.</p>
+          <ul class="admin-chip-list" data-pageduo-ele-id="e_NKhZS7cTQtqT">
+            <li data-pageduo-ele-id="e_ysVm2KMMBbWV">PDF தயார்</li>
+            <li data-pageduo-ele-id="e_YfLiFcvCClju">Metadata சரிபார்ப்பு</li>
+            <li data-pageduo-ele-id="e_EOjcW8j87Ep3">Published status</li>
+            <li data-pageduo-ele-id="e_2XzOJcmgYtgj">மாணவர் அணுகல்</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="admin-section" aria-labelledby="metadata-title" data-pageduo-ele-id="e_9LgwOJPzsVub">
+      <div class="admin-section-heading" data-pageduo-ele-id="e_TZU2oAED4UlL">
+        <div data-pageduo-ele-id="e_MyeY4GiVrHUV">
+          <p class="eyebrow" data-pageduo-ele-id="e_WuBJowCBGAR2">படி 2</p>
+          <h2 id="metadata-title" data-pageduo-ele-id="e_R4cLMcvi6Eos">நிர்வாக செயல்முறை</h2>
+        </div>
+        <p data-pageduo-ele-id="e_FOb8UgOsaa7O">ஒவ்வொரு PDF-க்கும் தெளிவான அடையாளமும் சரியான student-facing இணைப்புகளும் இருப்பதை உறுதி செய்வதே இந்தச் செயல்முறையின் நோக்கம்.</p>
+      </div>
+
+      <div class="admin-workflow" data-pageduo-ele-id="e_9jhbn3wCbEqF">
+        <div class="admin-workflow-intro" data-pageduo-ele-id="e_wOIl3tpxeWVB">
+          <p class="eyebrow" data-pageduo-ele-id="e_UXXJq0Z7UU26">சரிபார்ப்பு வரிசை</p>
+          <h2 id="workflow-title" data-pageduo-ele-id="e_TUAsf6aootv7">தயாரிப்பிலிருந்து வெளியீடு வரை</h2>
+          <p data-pageduo-ele-id="e_SLQxY0eRaroq">கீழே உள்ள படிகள் நிர்வாகி பின்பற்ற வேண்டிய வழிகாட்டல். இந்த browser பக்கம் எந்த server-side file operation-ஐயும் செய்யாது.</p>
+        </div>
+
+        <ol class="admin-steps" data-pageduo-ele-id="e_ppBwJ3dWp3nn">
+          <li data-pageduo-ele-id="e_wILRzW1g9c0B">
+            <div data-pageduo-ele-id="e_hPC1aT1CQg87">
+              <strong data-pageduo-ele-id="e_BycnhTMg1FZZ">PDF-ஐத் தேர்வு செய்து தயார் செய்யவும்</strong>
+              <span data-pageduo-ele-id="e_d7g9fcu4pmMc">தேவையான ஆவணம் சரியான பதிப்பு மற்றும் வாசிக்கக்கூடிய நிலையில் உள்ளதா என administrator உறுதி செய்ய வேண்டும்.</span>
+            </div>
+          </li>
+          <li data-pageduo-ele-id="e_P8f8un8Oo5u9">
+            <div data-pageduo-ele-id="e_tAnQ7kOqPEBN">
+              <strong data-pageduo-ele-id="e_5ElMLn8HxsBq">Metadata-வைச் சரிபார்க்கவும்</strong>
+              <span data-pageduo-ele-id="e_y5iSFcfzpKwH">Title, subject, category மற்றும் language ஆகியவை சரியாகவும் முழுமையாகவும் உள்ளதா எனப் பார்க்க வேண்டும்.</span>
+            </div>
+          </li>
+          <li data-pageduo-ele-id="e_V1NLBzIdZTPI">
+            <div data-pageduo-ele-id="e_dMlImq6hUqfD">
+              <strong data-pageduo-ele-id="e_wKaNyN9phyLY">Published status-ஐ உறுதி செய்யவும்</strong>
+              <span data-pageduo-ele-id="e_f773UzTvMCA4">பதிவு Published நிலையில் இருப்பதை administrator உறுதி செய்த பிறகே அது மாணவர்களுக்குக் கிடைக்க வேண்டும்.</span>
+            </div>
+          </li>
+          <li data-pageduo-ele-id="e_NAQtlq4jFbI2">
+            <div data-pageduo-ele-id="e_RmxQJwojx9CY">
+              <strong data-pageduo-ele-id="e_hmFJNHf5AIRZ">மாணவர் library-யில் சரிபார்க்கவும்</strong>
+              <span data-pageduo-ele-id="e_6tqseYrCMAwH">பதிவு <a href="pdf-library.html" data-pageduo-ele-id="e_qOg8kYaw1y2j">PDF Library</a>-யில் தோன்றுகிறதா, மேலும் அதன் <a href="pdf-preview.html" data-pageduo-ele-id="e_CxiHQmN1T86o">preview</a> சரியாக உள்ளதா எனப் பார்க்க வேண்டும்.</span>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="admin-section" aria-labelledby="states-title" data-pageduo-ele-id="e_Xg67uYWc1awN">
+      <div class="admin-section-heading" data-pageduo-ele-id="e_5teAGWd1uZL0">
+        <div data-pageduo-ele-id="e_EfHEIPQA6D06">
+          <p class="eyebrow" data-pageduo-ele-id="e_Eh0L6ApJSK6P">படி 3</p>
+          <h2 id="states-title" data-pageduo-ele-id="e_7MKk5BW8vnll">மாணவர்களுக்கு என்ன நடக்கும்?</h2>
+        </div>
+        <p data-pageduo-ele-id="e_KozVoVbnVWfB">வெளியிடப்பட்ட மற்றும் முழுமையான பதிவுகள் மட்டுமே மாணவர் அனுபவத்தில் தெரியும்.</p>
+      </div>
+
+      <div class="admin-state-grid" data-pageduo-ele-id="e_OnvfKjEVRlfs">
+        <article class="admin-state-card" data-pageduo-ele-id="e_Mb9mVPhQpWz4">
+          <span class="admin-state" data-pageduo-ele-id="e_r1rCbIHHJEYC">தேடல்</span>
+          <h3 data-pageduo-ele-id="e_AcVc7r4xvyoh">Subjects அல்லது PDF Library</h3>
+          <p data-pageduo-ele-id="e_IhxGI81XkaQm">மாணவர்கள் Subjects அல்லது <a href="pdf-library.html" data-pageduo-ele-id="e_VMSZsuzO3KV8">PDF Library</a> வழியாக வெளியிடப்பட்ட learning materials-ஐத் தேடுகிறார்கள்.</p>
+        </article>
+
+        <article class="admin-state-card" data-pageduo-ele-id="e_NH2LCRZNiBc4">
+          <span class="admin-state" data-pageduo-ele-id="e_6MOh49bKQD5n">Published</span>
+          <h3 data-pageduo-ele-id="e_GALBtUjwz1lS">Preview மற்றும் download</h3>
+          <p data-pageduo-ele-id="e_kLDwnv3uWCd5">கிடைக்கும் பதிவுகளை மாணவர்கள் preview செய்து, வழங்கப்பட்ட download URL மூலம் பயன்படுத்தலாம்.</p>
+        </article>
+
+        <article class="admin-state-card" data-pageduo-ele-id="e_XgOs5Xq5xDNc">
+          <span class="admin-state" data-pageduo-ele-id="e_spAnuSTVWqW7">காட்டப்படாது</span>
+          <h3 data-pageduo-ele-id="e_KerpEckpTbS6">முழுமையற்ற பதிவுகள்</h3>
+          <p data-pageduo-ele-id="e_kkr2nb9w1LGX">Unpublished அல்லது முழுமையற்ற பதிவுகள் மாணவர்-facing catalogue-ல் காட்டப்படாது.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="admin-section" aria-labelledby="capability-title" data-pageduo-ele-id="e_Fpfc5vgm2hed">
+      <div class="admin-section-heading" data-pageduo-ele-id="e_RzCTUPbTgAio">
+        <div data-pageduo-ele-id="e_606Xj8vpcarN">
+          <p class="eyebrow" data-pageduo-ele-id="e_3Oam1OXLtkep">படி 4</p>
+          <h2 id="capability-title" data-pageduo-ele-id="e_YB2lSU0hF9cB">பாதுகாப்பு எல்லை</h2>
+        </div>
+        <p data-pageduo-ele-id="e_osJGKP8chqOk">நிர்வாக மாற்றங்கள் மாணவர்-facing பக்கத்தில் செய்யப்படக்கூடாது.</p>
+      </div>
+
+      <div class="surface admin-vocabulary-card" data-pageduo-ele-id="e_SMhgFm6IE32j">
+        <table class="admin-capability-table" data-pageduo-ele-id="e_B3zR6TinoFr4">
+          <thead data-pageduo-ele-id="e_dPdoR9do2KPe">
+            <tr data-pageduo-ele-id="e_eAsR7yy1bvFP">
+              <th scope="col" data-pageduo-ele-id="e_5lmulS7iry8B">பாதுகாக்க வேண்டியது</th>
+              <th scope="col" data-pageduo-ele-id="e_XZm3lnD783Dz">எங்கு நடக்க வேண்டும்</th>
+              <th scope="col" data-pageduo-ele-id="e_9f1vJsg3G8QM">இந்தப் பக்கத்தின் நிலை</th>
+            </tr>
+          </thead>
+          <tbody data-pageduo-ele-id="e_f3Nxvps68K6h">
+            <tr data-pageduo-ele-id="e_cCwZ8meDC5NQ">
+              <td data-pageduo-ele-id="e_9dC7uzz3JLYr">Login மற்றும் password</td>
+              <td data-pageduo-ele-id="e_vydZRo7GhuM8">பாதுகாக்கப்பட்ட backend</td>
+              <td data-pageduo-ele-id="e_d4tGoEUlVszE">இங்கு login form அல்லது password field இல்லை</td>
+            </tr>
+            <tr data-pageduo-ele-id="e_cDfQMNITO1uP">
+              <td data-pageduo-ele-id="e_tWuIUn4lw9Ns">Google Drive credentials</td>
+              <td data-pageduo-ele-id="e_ei4gO5muu2Jv">வெளிப்புற administrator workflow</td>
+              <td data-pageduo-ele-id="e_TwIPCJV8Onjc">Credentials இங்கு சேமிக்கப்படவோ காட்டப்படவோ இல்லை</td>
+            </tr>
+            <tr data-pageduo-ele-id="e_wKJrQDg4E8ee">
+              <td data-pageduo-ele-id="e_sqVmATlUuTbg">File upload</td>
+              <td data-pageduo-ele-id="e_nCPGMyL0BnoC">பாதுகாக்கப்பட்ட file service</td>
+              <td data-pageduo-ele-id="e_Fcam57dgVfPY">Upload control இங்கு இல்லை</td>
+            </tr>
+            <tr data-pageduo-ele-id="e_c8o2qxZMjsAC">
+              <td data-pageduo-ele-id="e_9Dg5Cxq3Xx9Y">Publishing action</td>
+              <td data-pageduo-ele-id="e_rtyGM96F1T8j">Authenticated administrator workflow</td>
+              <td data-pageduo-ele-id="e_V4JYCdiBRrMV">Publish அல்லது save button இங்கு இல்லை</td>
+            </tr>
+            <tr data-pageduo-ele-id="e_oDsJHDUx5nbI">
+              <td data-pageduo-ele-id="e_dMnegnLHfUbW">Metadata editing</td>
+              <td data-pageduo-ele-id="e_tDJStSMui06u">Role-protected backend</td>
+              <td data-pageduo-ele-id="e_KxKiLcnJgzrL">Editable metadata form இங்கு இல்லை</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-section" aria-labelledby="limitation-title" data-pageduo-ele-id="e_Vrnw6clqHcxA">
+      <div class="admin-notice" data-pageduo-ele-id="e_mFdLNdG5Di7a">
+        <div data-pageduo-ele-id="e_CYRAuUiMoEFT">
+          <p class="eyebrow" data-pageduo-ele-id="e_Gsyul5W7gdkg">படி 5</p>
+          <h2 id="limitation-title" data-pageduo-ele-id="e_XSiRFcHMD7vl">சிக்கல் தீர்வு</h2>
+          <p data-pageduo-ele-id="e_pk1neqoaZ1qs">PDF தெரியவில்லை என்றால் administrator முதலில் published status-ஐச் சரிபார்க்க வேண்டும். அடுத்து subject, language, preview URL, download URL மற்றும் title உள்ளிட்ட metadata அனைத்தும் சரியாக உள்ளதா எனப் பார்க்க வேண்டும். பதிவில் ஏதேனும் தகவல் முழுமையற்றதாக இருந்தால், பாதுகாக்கப்பட்ட வெளிப்புற நிர்வாகச் செயல்முறையில் அதைச் சரிசெய்து பின்னர் library-யை மீண்டும் சரிபார்க்க வேண்டும்.</p>
+        </div>
+        <a class="button button-secondary" href="pdf-library.html" data-pageduo-ele-id="e_jTiiaQ0125C5">மாணவர் library-ஐப் பார்க்க</a>
+      </div>
+      <p class="admin-footnote" data-pageduo-ele-id="e_7blNuB4p8EOZ">இந்தப் பக்கம் வழிகாட்டல் மட்டுமே; நிர்வாக மாற்றங்கள் பாதுகாக்கப்பட்ட வெளிப்புற செயல்முறையில் செய்யப்படுகின்றன.</p>
+    </section>
+  </div>
+</main>
+<footer class="site-footer" data-pageduo-ele-id="e_Y07Zmj8cU03Q">
+  <div class="container footer-inner" data-pageduo-ele-id="e_RBr9Ofhiy3jO">
+    <div data-pageduo-ele-id="e_TFhat9sWikhB">
+      <a href="index.html" data-pageduo-ele-id="e_LmZM0r7G5L4X">SmartStudent</a>
+      <p class="footer-note" data-pageduo-ele-id="e_2j3tAlAcq5UK">A focused Grade 09 learning-material library for Sri Lankan students, with published resources in Tamil and English.</p>
+    </div>
+    <p class="footer-note" data-pageduo-ele-id="e_9z77q85jfNgl">Student access is limited to administrator-published PDFs. Google Drive management remains private to administrators.</p>
+  </div>
+</footer>
+
+</body></html>

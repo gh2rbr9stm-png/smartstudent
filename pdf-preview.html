@@ -1,0 +1,927 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF Preview and Download — SmartStudent - Grade 09 PDFs</title>
+<meta name="description" content="Preview a published Grade 09 PDF with page navigation, zoom and full-screen controls before downloading it.">
+<meta name="pd:project" content="SmartStudent - Grade 09 PDFs">
+<style data-pd-baseline="">button,input,select,textarea{font:inherit;color:inherit;line-height:inherit}textarea{display:block;resize:vertical}button,input,select,textarea{box-sizing:border-box;max-width:100%}textarea,select,input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]){padding:.55em .7em;border:1px solid color-mix(in srgb,currentColor 28%,transparent);border-radius:.4rem;background:transparent}</style>
+<style data-pd-page="">
+.preview-page {
+  padding-block: 28px 72px;
+  background: var(--mist);
+}
+
+.preview-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.preview-breadcrumb a {
+  color: var(--teal-dark);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.preview-breadcrumb a:hover,
+.preview-breadcrumb a:focus-visible {
+  text-decoration: underline;
+}
+
+.preview-identity {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 28px;
+}
+
+.preview-identity h1 {
+  max-width: 820px;
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.04;
+  letter-spacing: -.055em;
+  overflow-wrap: anywhere;
+}
+
+.preview-kicker {
+  max-width: 680px;
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.preview-status {
+  max-width: 300px;
+  padding: 12px 16px;
+  border-left: 4px solid var(--yellow);
+  border-radius: 10px;
+  color: var(--ink);
+  background: var(--paper);
+  font-size: .9rem;
+  box-shadow: 0 8px 24px rgba(8, 47, 73, .08);
+}
+
+.preview-status[hidden] {
+  display: none;
+}
+
+.preview-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 320px);
+  gap: 24px;
+  align-items: start;
+}
+
+.preview-viewer {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #b9ced0;
+  border-radius: var(--radius);
+  background: #cbdadd;
+  box-shadow: var(--shadow);
+}
+
+.preview-viewer.is-focus {
+  position: fixed;
+  z-index: 20;
+  inset: 12px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgba(8, 47, 73, .28);
+}
+
+.preview-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 12px;
+  border-bottom: 1px solid #b9ced0;
+  background: var(--paper);
+}
+
+.preview-toolbar button,
+.preview-page-number {
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.preview-toolbar button {
+  min-width: 44px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.preview-toolbar button:hover:not(:disabled),
+.preview-toolbar button:focus-visible:not(:disabled) {
+  border-color: var(--teal);
+  color: var(--teal-dark);
+}
+
+.preview-toolbar button:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+}
+
+.preview-page-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-inline: 4px;
+  color: var(--muted);
+  font-size: .92rem;
+  font-weight: 800;
+}
+
+.preview-page-number {
+  width: 64px;
+  padding: 8px 7px;
+  text-align: center;
+}
+
+.preview-page-number:focus {
+  outline: 3px solid rgba(15, 118, 110, .24);
+  outline-offset: 1px;
+}
+
+.preview-toolbar-spacer {
+  flex: 1 1 12px;
+}
+
+.preview-canvas {
+  position: relative;
+  min-height: 620px;
+  background: #afc3c7;
+}
+
+.preview-canvas iframe {
+  display: block;
+  width: 100%;
+  height: min(78vh, 900px);
+  min-height: 620px;
+  border: 0;
+  background: var(--paper);
+}
+
+.preview-viewer.is-focus .preview-canvas,
+.preview-viewer.is-focus .preview-canvas iframe {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+}
+
+.preview-empty {
+  display: grid;
+  place-items: center;
+  min-height: 620px;
+  padding: 40px 24px;
+  text-align: center;
+  background: var(--paper);
+}
+
+.preview-empty[hidden] {
+  display: none;
+}
+
+.preview-empty-content {
+  max-width: 440px;
+}
+
+.preview-empty h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  line-height: 1.15;
+}
+
+.preview-empty p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.preview-loading {
+  padding: 9px 14px;
+  color: var(--muted);
+  background: var(--paper);
+  font-size: .86rem;
+}
+
+.preview-loading[hidden] {
+  display: none;
+}
+
+.preview-rail {
+  min-width: 0;
+  padding: 24px;
+}
+
+.preview-rail h2 {
+  margin: 0 0 18px;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.preview-facts {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.preview-fact {
+  padding: 13px 0;
+  border-top: 1px solid var(--line);
+}
+
+.preview-fact dt {
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.preview-fact dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.preview-description {
+  margin: 22px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.preview-description h3 {
+  margin: 0 0 7px;
+  font-size: 1rem;
+}
+
+.preview-description p {
+  margin: 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.preview-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.preview-actions .button {
+  width: 100%;
+  text-align: center;
+}
+
+.preview-actions .button[hidden] {
+  display: none;
+}
+
+.preview-note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+@media (max-width: 820px) {
+  .preview-identity {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .preview-status {
+    max-width: none;
+  }
+
+  .preview-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-rail {
+    order: 2;
+  }
+}
+
+@media (max-width: 560px) {
+  .preview-page {
+    padding-top: 20px;
+  }
+
+  .preview-toolbar {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .preview-toolbar-spacer {
+    display: none;
+  }
+
+  .preview-toolbar button {
+    flex: 1 1 44px;
+    padding-inline: 8px;
+  }
+
+  .preview-page-control {
+    order: 5;
+    width: 100%;
+    justify-content: center;
+    margin: 2px 0 0;
+  }
+
+  .preview-canvas,
+  .preview-empty {
+    min-height: 500px;
+  }
+
+  .preview-canvas iframe {
+    min-height: 500px;
+    height: 72vh;
+  }
+
+  .preview-viewer.is-focus {
+    inset: 0;
+    border-radius: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-viewer {
+    transition: none;
+  }
+}
+</style>
+<style id="pd-ds" data-pd-shared="design-system">:root {
+  --ink: #082f49;
+  --teal: #0f766e;
+  --teal-dark: #095c58;
+  --yellow: #f4b942;
+  --mist: #e8f1f2;
+  --line: #d7e4e5;
+  --paper: #ffffff;
+  --muted: #55717a;
+  --shadow: 0 14px 36px rgba(8, 47, 73, .10);
+  --radius: 18px;
+  --content: 1180px;
+  --sans: "Noto Sans Tamil", "Noto Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+img, svg { max-width: 100%; }
+a { color: inherit; }
+button, input { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.container {
+  width: min(calc(100% - 32px), var(--content));
+  margin-inline: auto;
+}
+.site-header {
+  position: relative;
+  z-index: 5;
+  border-bottom: 1px solid rgba(215, 228, 229, .9);
+  background: rgba(255,255,255,.96);
+}
+.header-inner {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-block: 14px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  font-size: 1.2rem;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  color: var(--ink);
+  background: var(--yellow);
+  font-weight: 900;
+}
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px 18px;
+  flex-wrap: wrap;
+}
+.site-nav a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: .92rem;
+  font-weight: 700;
+  transition: color .2s ease;
+}
+.site-nav a:hover, .site-nav a:focus-visible { color: var(--teal); }
+
+.button {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  text-decoration: none;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+.button:hover, .button:focus-visible { transform: translateY(-2px); }
+.button-primary { color: var(--ink); background: var(--yellow); }
+.button-primary:hover, .button-primary:focus-visible { background: #ffd166; }
+.button-secondary { color: var(--teal-dark); background: var(--paper); border-color: var(--line); }
+.button-secondary:hover, .button-secondary:focus-visible { border-color: var(--teal); }
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--teal);
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.section-heading { max-width: 650px; }
+.section-heading h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  line-height: 1.12;
+  letter-spacing: -.045em;
+}
+.section-heading p { margin: 0; color: var(--muted); }
+.surface {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.tag {
+  display: inline-flex;
+  padding: 4px 9px;
+  border-radius: 99px;
+  color: var(--teal-dark);
+  background: var(--mist);
+  font-size: .76rem;
+  font-weight: 800;
+}
+.language-toggle {
+  display: inline-flex;
+  padding: 4px;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 99px;
+  background: rgba(255,255,255,.12);
+}
+.language-toggle button {
+  min-height: 34px;
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 99px;
+  color: rgba(255,255,255,.75);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 800;
+}
+.language-toggle button[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--yellow);
+}
+.site-footer {
+  margin-top: 80px;
+  color: rgba(255,255,255,.8);
+  background: var(--ink);
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 28px;
+  flex-wrap: wrap;
+  padding-block: 34px;
+}
+.footer-inner p { max-width: 430px; margin: 0; }
+.footer-inner a { color: white; text-decoration: none; font-weight: 700; }
+.footer-note { color: rgba(255,255,255,.58); font-size: .9rem; }
+
+@media (max-width: 720px) {
+  .header-inner { align-items: flex-start; }
+  .site-nav { width: 100%; gap: 8px 14px; }
+  .site-nav a { font-size: .84rem; }
+  .container { width: min(calc(100% - 24px), var(--content)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}</style>
+<style data-pd-corrections="">fieldset>legend{float:none!important}</style>
+</head>
+<body data-pageduo-ele-id="e_qzZ8X4qBhQgw">
+<header class="site-header" data-pageduo-ele-id="e_yW9NuzTvD1il">
+  <div class="container header-inner" data-pageduo-ele-id="e_quKlBL4Q8hZN">
+    <a class="brand" href="index.html" aria-label="SmartStudent home" data-pageduo-ele-id="e_EaYfYPmjn13K">
+      <span class="brand-mark" aria-hidden="true" data-pageduo-ele-id="e_ficdWGORri9F">S9</span>
+      <span data-pageduo-ele-id="e_zyerguMb1P7Z">SmartStudent</span>
+    </a>
+    <nav class="site-nav" aria-label="Main navigation" data-pageduo-ele-id="e_96OdLpyQlx07">
+      <a href="index.html" title="Home" data-pageduo-ele-id="e_PCfJTAvfjtQI">Home</a>
+      <a href="subjects.html" title="Subjects" data-pageduo-ele-id="e_B32aHPpk7TzZ">Subjects</a>
+      <a href="pdf-library.html" title="PDF Library" data-pageduo-ele-id="e_7pgEYcQholx9">PDF Library</a>
+      <a href="pdf-preview.html" title="PDF Preview" aria-current="page" data-pageduo-ele-id="e_RAdk1baBdkVw">PDF Preview</a>
+      <a href="admin.html" title="Admin" data-pageduo-ele-id="e_thrUYm2m6PMC">Admin</a>
+    </nav>
+  </div>
+</header>
+<main class="preview-page" data-pageduo-ele-id="e_ajQ47nDheYWW">
+  <div class="container" data-pageduo-ele-id="e_7ZbYEyyYEbTk">
+    <nav class="preview-breadcrumb" aria-label="Breadcrumb" data-pageduo-ele-id="e_y8WLFmpzEwVd">
+      <a href="pdf-library.html" data-pageduo-ele-id="e_auUYfNIh6QIm">PDF Library</a>
+      <span aria-hidden="true" data-pageduo-ele-id="e_BOs9zmgiXNsL">/</span>
+      <span aria-current="page" data-pageduo-ele-id="e_5vfEIPIAAwjj">PDF Preview</span>
+    </nav>
+
+    <header class="preview-identity" data-pageduo-ele-id="e_MMUDYGtfgXZG">
+      <div data-pageduo-ele-id="e_FWP5HVzIOgA0">
+        <p class="eyebrow" data-pageduo-ele-id="e_sDhFhBVAbUvB">Grade 09 document preview</p>
+        <h1 id="document-title" data-pageduo-ele-id="e_iu7zGXW3OJkD">Selected learning resource</h1>
+        <p class="preview-kicker" id="document-kicker" data-pageduo-ele-id="e_fcsbo8WWF4UN">Inspect the published document before you download it.</p>
+      </div>
+      <div class="preview-status" id="document-status" role="status" aria-live="polite" hidden="" data-pageduo-ele-id="e_acgAlQl8sSMu"></div>
+    </header>
+
+    <section class="preview-workspace" aria-label="PDF preview workspace" data-pageduo-ele-id="e_SgJuaKLkqBYg">
+      <article class="preview-viewer" id="preview-viewer" data-pageduo-ele-id="e_6r7ow3Du5oiY">
+        <div class="preview-toolbar" aria-label="PDF viewer controls" data-pageduo-ele-id="e_V0Sce27z5kpo">
+          <button type="button" id="previous-page" aria-label="Previous page" data-pageduo-ele-id="e_BQCl0XiZpCor">←</button>
+          <button type="button" id="next-page" aria-label="Next page" data-pageduo-ele-id="e_p990tbUo2pIN">→</button>
+
+          <label class="preview-page-control" for="page-number" data-pageduo-ele-id="e_lk9p67nNgNEU">
+            Page
+            <input class="preview-page-number" id="page-number" type="number" min="1" value="1" inputmode="numeric" aria-describedby="page-total" data-pageduo-ele-id="e_QDq5ksebaKaq">
+            <span id="page-total" data-pageduo-ele-id="e_NvYtkWpTwKfK">of —</span>
+          </label>
+
+          <span class="preview-toolbar-spacer" aria-hidden="true" data-pageduo-ele-id="e_zVuFH46h0ccZ"></span>
+          <button type="button" id="zoom-out" aria-label="Zoom out" data-pageduo-ele-id="e_07uoCONxO1f3">−</button>
+          <button type="button" id="zoom-in" aria-label="Zoom in" data-pageduo-ele-id="e_ocEBHXUtM3WW">+</button>
+          <button type="button" id="fullscreen-button" aria-label="Open full-screen preview" data-pageduo-ele-id="e_lsI1KsQnxhkN">⛶</button>
+        </div>
+
+        <div class="preview-loading" id="preview-loading" role="status" data-pageduo-ele-id="e_McozKO6kU51n">Preparing the document preview…</div>
+
+        <div class="preview-canvas" id="preview-canvas" data-pageduo-ele-id="e_RFE20t1DjK9i">
+          <iframe id="pdf-frame" title="Published Grade 09 PDF preview" loading="lazy" data-pageduo-ele-id="e_GnPpXA30ZHUr"></iframe>
+          <div class="preview-empty" id="preview-empty" hidden="" data-pageduo-ele-id="e_c2qHXHvJFYVy">
+            <div class="preview-empty-content" data-pageduo-ele-id="e_WxIFX1PNmoY0">
+              <h2 id="empty-title" data-pageduo-ele-id="e_6ETkkCuwne8Q">Document preview unavailable</h2>
+              <p id="empty-message" data-pageduo-ele-id="e_loMVUJ3mtsGt">The selected record does not contain a previewable published PDF.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <aside class="preview-rail surface" aria-labelledby="details-heading" data-pageduo-ele-id="e_78UXBYMDol3z">
+        <h2 id="details-heading" data-pageduo-ele-id="e_gBOvU6Y5bdoD">About this document</h2>
+
+        <dl class="preview-facts" data-pageduo-ele-id="e_SAcfA8DEvTZ2">
+          <div class="preview-fact" id="fact-subject" hidden="" data-pageduo-ele-id="e_ocTJRRhwAzBG">
+            <dt data-pageduo-ele-id="e_Jo0VzlyzjJLy">Subject</dt>
+            <dd id="document-subject" data-pageduo-ele-id="e_sRaeCqq0lcLA"></dd>
+          </div>
+          <div class="preview-fact" id="fact-category" hidden="" data-pageduo-ele-id="e_TyKsbuSMKJQE">
+            <dt data-pageduo-ele-id="e_Sqf42F5BqnyK">Category</dt>
+            <dd id="document-category" data-pageduo-ele-id="e_2RWk9ZydaJxG"></dd>
+          </div>
+          <div class="preview-fact" id="fact-language" hidden="" data-pageduo-ele-id="e_UKf72l3ZgBmT">
+            <dt data-pageduo-ele-id="e_8sPrZiGgiYDN">Language</dt>
+            <dd id="document-language" data-pageduo-ele-id="e_GMkkC97xyQEc"></dd>
+          </div>
+          <div class="preview-fact" id="fact-date" hidden="" data-pageduo-ele-id="e_ekozxZs06ve9">
+            <dt data-pageduo-ele-id="e_Q4bwNgXaDHcS">Published</dt>
+            <dd id="document-date" data-pageduo-ele-id="e_gjusjVanEiqh"></dd>
+          </div>
+          <div class="preview-fact" id="fact-identifier" hidden="" data-pageduo-ele-id="e_rB8eCYWVn57z">
+            <dt data-pageduo-ele-id="e_ob6dAOZ7VuXh">Document ID</dt>
+            <dd id="document-identifier" data-pageduo-ele-id="e_3S7nPCCpVyvS"></dd>
+          </div>
+        </dl>
+
+        <div class="preview-description" data-pageduo-ele-id="e_dqlvHiITO893">
+          <h3 data-pageduo-ele-id="e_c2fri1b1SaWX">Description</h3>
+          <p id="document-description" data-pageduo-ele-id="e_ANhr11uDgSut">No description was supplied for this document.</p>
+        </div>
+
+        <div class="preview-actions" data-pageduo-ele-id="e_yPXhJje6k4iz">
+          <a class="button button-primary" id="download-link" href="#" hidden="" download="" data-pageduo-ele-id="e_zjxTjaWwQ59b">Download PDF</a>
+          <a class="button button-secondary" href="pdf-library.html" data-pageduo-ele-id="e_hQQVJuvbjyZ0">Return to PDF Library</a>
+        </div>
+
+        <p class="preview-note" data-pageduo-ele-id="e_re2RQQsbNyDE">Viewing activity stays on this device and is not saved.</p>
+      </aside>
+    </section>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  function initialisePreview() {
+    var query = new URLSearchParams(window.location.search);
+    var titleNode = document.getElementById("document-title");
+    var kickerNode = document.getElementById("document-kicker");
+    var statusNode = document.getElementById("document-status");
+    var frameNode = document.getElementById("pdf-frame");
+    var loadingNode = document.getElementById("preview-loading");
+    var emptyNode = document.getElementById("preview-empty");
+    var emptyTitleNode = document.getElementById("empty-title");
+    var emptyMessageNode = document.getElementById("empty-message");
+    var viewerNode = document.getElementById("preview-viewer");
+    var canvasNode = document.getElementById("preview-canvas");
+    var previousNode = document.getElementById("previous-page");
+    var nextNode = document.getElementById("next-page");
+    var pageNode = document.getElementById("page-number");
+    var totalNode = document.getElementById("page-total");
+    var zoomOutNode = document.getElementById("zoom-out");
+    var zoomInNode = document.getElementById("zoom-in");
+    var fullscreenNode = document.getElementById("fullscreen-button");
+    var downloadNode = document.getElementById("download-link");
+
+    if (!titleNode || !frameNode || !loadingNode || !emptyNode || !viewerNode || !canvasNode) {
+      return;
+    }
+
+    var subjectNode = document.getElementById("document-subject");
+    var categoryNode = document.getElementById("document-category");
+    var languageNode = document.getElementById("document-language");
+    var dateNode = document.getElementById("document-date");
+    var identifierNode = document.getElementById("document-identifier");
+    var descriptionNode = document.getElementById("document-description");
+
+    var currentPage = parsePositiveNumber(query.get("page"), 1);
+    var currentZoom = parsePositiveNumber(query.get("zoom"), 100);
+    var pageCount = parsePositiveNumber(query.get("pages"), 0);
+    var pdfUrl = query.get("pdfUrl") || query.get("pdf") || "";
+    var downloadUrl = query.get("downloadUrl") || query.get("download") || "";
+    var publishedValue = (query.get("published") || "").toLowerCase();
+    var isPublished = publishedValue === "true" || publishedValue === "published" || publishedValue === "yes";
+    var documentTitle = query.get("title") || "";
+    var documentSubject = query.get("subject") || "";
+    var documentCategory = query.get("category") || "";
+    var documentLanguage = query.get("language") || "";
+    var documentDate = query.get("publishedAt") || query.get("date") || "";
+    var documentDescription = query.get("description") || "";
+    var documentIdentifier = query.get("id") || "";
+
+    function parsePositiveNumber(value, fallback) {
+      var numberValue = Number(value);
+      return Number.isFinite(numberValue) && numberValue > 0 ? Math.round(numberValue) : fallback;
+    }
+
+    function validWebUrl(value) {
+      try {
+        var parsedUrl = new URL(value);
+        return parsedUrl.protocol === "https:" || parsedUrl.protocol === "http:";
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function setFact(factId, valueId, value) {
+      var factNode = document.getElementById(factId);
+      var valueNode = document.getElementById(valueId);
+      if (!factNode || !valueNode) {
+        return;
+      }
+      if (value) {
+        valueNode.textContent = value;
+        factNode.hidden = false;
+      } else {
+        factNode.hidden = true;
+      }
+    }
+
+    function updateFrame() {
+      if (!validWebUrl(pdfUrl) || !isPublished) {
+        return;
+      }
+      var frameUrl;
+      try {
+        frameUrl = new URL(pdfUrl);
+        frameUrl.hash = "page=" + currentPage + "&zoom=" + currentZoom;
+        frameNode.src = frameUrl.toString();
+      } catch (error) {
+        showUnavailable("Preview unavailable", "This document has an invalid preview address.");
+      }
+    }
+
+    function updateControls() {
+      pageNode.value = String(currentPage);
+      if (pageCount > 0) {
+        totalNode.textContent = "of " + pageCount;
+        previousNode.disabled = currentPage <= 1;
+        nextNode.disabled = currentPage >= pageCount;
+      } else {
+        totalNode.textContent = "of —";
+        previousNode.disabled = currentPage <= 1;
+        nextNode.disabled = false;
+      }
+      zoomOutNode.disabled = currentZoom <= 50;
+      zoomInNode.disabled = currentZoom >= 200;
+    }
+
+    function showUnavailable(heading, message) {
+      frameNode.hidden = true;
+      loadingNode.hidden = true;
+      emptyNode.hidden = false;
+      emptyTitleNode.textContent = heading;
+      emptyMessageNode.textContent = message;
+      previousNode.disabled = true;
+      nextNode.disabled = true;
+      pageNode.disabled = true;
+      zoomOutNode.disabled = true;
+      zoomInNode.disabled = true;
+      fullscreenNode.disabled = true;
+      statusNode.hidden = false;
+      statusNode.textContent = message;
+    }
+
+    function setPage(nextPage) {
+      var proposedPage = parsePositiveNumber(nextPage, currentPage);
+      if (pageCount > 0) {
+        proposedPage = Math.min(pageCount, Math.max(1, proposedPage));
+      } else {
+        proposedPage = Math.max(1, proposedPage);
+      }
+      currentPage = proposedPage;
+      updateControls();
+      updateFrame();
+    }
+
+    function enterFocusMode() {
+      if (viewerNode.requestFullscreen) {
+        viewerNode.requestFullscreen().catch(function () {
+          viewerNode.classList.add("is-focus");
+        });
+      } else {
+        viewerNode.classList.add("is-focus");
+      }
+      fullscreenNode.textContent = "×";
+      fullscreenNode.setAttribute("aria-label", "Close full-screen preview");
+    }
+
+    function leaveFocusMode() {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(function () {});
+      }
+      viewerNode.classList.remove("is-focus");
+      fullscreenNode.textContent = "⛶";
+      fullscreenNode.setAttribute("aria-label", "Open full-screen preview");
+    }
+
+    titleNode.textContent = documentTitle || "Selected learning resource";
+    if (documentTitle) {
+      kickerNode.textContent = "Inspect the published document before you download it.";
+    } else {
+      kickerNode.textContent = "A document title was not supplied by the selected library record.";
+    }
+
+    setFact("fact-subject", "document-subject", documentSubject);
+    setFact("fact-category", "document-category", documentCategory);
+    setFact("fact-language", "document-language", documentLanguage);
+    setFact("fact-date", "document-date", documentDate);
+    setFact("fact-identifier", "document-identifier", documentIdentifier);
+
+    if (documentDescription) {
+      descriptionNode.textContent = documentDescription;
+    }
+
+    if (!pdfUrl) {
+      showUnavailable("No document selected", "Return to the PDF Library and choose a published resource to preview.");
+      statusNode.textContent = "No published PDF was supplied to this preview.";
+    } else if (!isPublished) {
+      showUnavailable("Document not published", "This resource cannot be previewed or downloaded until an administrator publishes it.");
+      statusNode.textContent = "Preview and download are limited to published resources.";
+    } else if (!validWebUrl(pdfUrl)) {
+      showUnavailable("Preview unavailable", "The selected record contains an invalid PDF preview address.");
+      statusNode.textContent = "The preview address could not be verified.";
+    } else {
+      frameNode.hidden = false;
+      statusNode.hidden = true;
+      if (pageCount > 0) {
+        totalNode.textContent = "of " + pageCount;
+      }
+      updateControls();
+      updateFrame();
+
+      frameNode.addEventListener("load", function () {
+        loadingNode.hidden = true;
+        statusNode.hidden = true;
+      });
+
+      window.setTimeout(function () {
+        if (!loadingNode.hidden) {
+          loadingNode.textContent = "The preview is taking longer than expected. You can try opening the document again or return to the library.";
+          statusNode.hidden = false;
+          statusNode.textContent = "Preview loading is delayed.";
+        }
+      }, 9000);
+    }
+
+    if (isPublished && validWebUrl(downloadUrl)) {
+      downloadNode.href = downloadUrl;
+      downloadNode.hidden = false;
+    }
+
+    previousNode.addEventListener("click", function () {
+      setPage(currentPage - 1);
+    });
+
+    nextNode.addEventListener("click", function () {
+      setPage(currentPage + 1);
+    });
+
+    pageNode.addEventListener("change", function () {
+      setPage(pageNode.value);
+    });
+
+    pageNode.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        setPage(pageNode.value);
+      }
+    });
+
+    zoomOutNode.addEventListener("click", function () {
+      currentZoom = Math.max(50, currentZoom - 10);
+      updateControls();
+      updateFrame();
+    });
+
+    zoomInNode.addEventListener("click", function () {
+      currentZoom = Math.min(200, currentZoom + 10);
+      updateControls();
+      updateFrame();
+    });
+
+    fullscreenNode.addEventListener("click", function () {
+      if (viewerNode.classList.contains("is-focus") || document.fullscreenElement) {
+        leaveFocusMode();
+      } else {
+        enterFocusMode();
+      }
+    });
+
+    document.addEventListener("fullscreenchange", function () {
+      if (!document.fullscreenElement && viewerNode.classList.contains("is-focus")) {
+        viewerNode.classList.remove("is-focus");
+        fullscreenNode.textContent = "⛶";
+        fullscreenNode.setAttribute("aria-label", "Open full-screen preview");
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialisePreview);
+  } else {
+    initialisePreview();
+  }
+}());
+</script>
+<footer class="site-footer" data-pageduo-ele-id="e_Mevbcz0LCOdM">
+  <div class="container footer-inner" data-pageduo-ele-id="e_doXP0rTDCxcY">
+    <div data-pageduo-ele-id="e_JaqxaCp0qoXl">
+      <a href="index.html" data-pageduo-ele-id="e_vQCVrVjLeB43">SmartStudent</a>
+      <p class="footer-note" data-pageduo-ele-id="e_xaDcVoEbFhKu">A focused Grade 09 learning-material library for Sri Lankan students, with published resources in Tamil and English.</p>
+    </div>
+    <p class="footer-note" data-pageduo-ele-id="e_MVdoMeYLAq2l">Student access is limited to administrator-published PDFs. Google Drive management remains private to administrators.</p>
+  </div>
+</footer>
+
+</body></html>

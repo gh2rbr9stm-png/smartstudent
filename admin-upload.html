@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF Upload — SmartStudent Admin</title>
+<style>
+  :root {
+    --ink: #082f49;
+    --teal: #0f766e;
+    --teal-dark: #095c58;
+    --yellow: #f4b942;
+    --mist: #e8f1f2;
+    --line: #d7e4e5;
+    --paper: #ffffff;
+    --muted: #55717a;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans Tamil", "Noto Sans", system-ui, sans-serif;
+    background: var(--mist);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { margin-bottom: 28px; }
+  h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -.04em; }
+  .lead { margin: 0; color: var(--muted); }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 20px rgba(8,47,73,.06);
+  }
+  .card h2 {
+    margin: 0 0 16px;
+    font-size: 1.15rem;
+    letter-spacing: -.02em;
+  }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid .full { grid-column: 1 / -1; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: .8rem;
+    font-weight: 800;
+    color: var(--muted);
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper);
+    color: var(--ink);
+    font: inherit;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: 0;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(15,118,110,.15);
+  }
+  textarea { resize: vertical; min-height: 80px; }
+  .hint { margin: 4px 0 0; font-size: .78rem; color: var(--muted); }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  button {
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: .95rem;
+    cursor: pointer;
+    transition: transform .15s ease, background .15s ease;
+  }
+  button:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--teal); color: white; }
+  .btn-primary:hover { background: var(--teal-dark); }
+  .btn-yellow { background: var(--yellow); color: var(--ink); }
+  .btn-yellow:hover { background: #ffd166; }
+  .btn-ghost { background: var(--paper); border: 1px solid var(--line); color: var(--teal-dark); }
+  .btn-ghost:hover { border-color: var(--teal); }
+  .btn-danger { background: #fee2e2; color: #991b1b; }
+  .btn-danger:hover { background: #fecaca; }
+
+  .list-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .list-head h2 { margin: 0; }
+  .count {
+    display: inline-flex;
+    padding: 4px 10px;
+    border-radius: 99px;
+    background: var(--mist);
+    color: var(--teal-dark);
+    font-size: .82rem;
+    font-weight: 800;
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+  }
+  .item:first-child { border-top: 0; }
+  .item-title { font-weight: 800; margin: 0 0 4px; }
+  .item-meta { margin: 0; font-size: .84rem; color: var(--muted); }
+  .item .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .item .tags span {
+    padding: 2px 8px;
+    background: var(--mist);
+    border-radius: 99px;
+    font-size: .72rem;
+    font-weight: 800;
+    color: var(--teal-dark);
+  }
+  .item button {
+    padding: 8px 14px;
+    font-size: .82rem;
+  }
+
+  .empty {
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--muted);
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+  }
+
+  .status {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    padding: 12px 24px;
+    background: var(--ink);
+    color: white;
+    border-radius: 10px;
+    font-weight: 800;
+    box-shadow: 0 10px 30px rgba(8,47,73,.3);
+    transition: transform .3s ease;
+    z-index: 100;
+  }
+  .status.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p style="margin:0 0 8px;color:var(--teal);font-weight:900;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;">SmartStudent Admin</p>
+    <h1>PDF Upload Form</h1>
+    <p class="lead">PDF-ஐ Google Drive-இல் upload செய்து, link-ஐ இங்கே paste செய்யுங்கள். விவரங்களைச் சேர்த்து, catalogue.js-ஐ download செய்யுங்கள்.</p>
+  </header>
+
+  <!-- FORM -->
+  <div class="card">
+    <h2>➕ புதிய PDF சேர்க்க</h2>
+    <div class="grid">
+      <div class="full">
+        <label for="title">தலைப்பு (Title) *</label>
+        <input id="title" type="text" placeholder="எ.கா. Grade 09 Science Short Notes">
+      </div>
+
+      <div>
+        <label for="subject">பாடம் (Subject) *</label>
+        <select id="subject">
+          <option value="">— தேர்ந்தெடுக்கவும் —</option>
+          <option>தமிழ்</option>
+          <option>English</option>
+          <option>Mathematics</option>
+          <option>Science</option>
+          <option>History</option>
+          <option>Geography</option>
+          <option>ICT</option>
+          <option>Health</option>
+          <option>Civics</option>
+          <option>Sinhala</option>
+          <option>Music</option>
+          <option>Saivanery</option>
+          <option>PTS</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="category">வகை (Category) *</label>
+        <select id="category">
+          <option value="">— தேர்ந்தெடுக்கவும் —</option>
+          <option>Textbooks</option>
+          <option>Short Notes</option>
+          <option>Full Notes</option>
+          <option>Teacher Guides</option>
+          <option>Exercises</option>
+          <option>Past Papers</option>
+          <option>Model Papers</option>
+          <option>Revision Papers</option>
+          <option>Important Questions</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="language">மொழி (Language) *</label>
+        <select id="language">
+          <option value="">— தேர்ந்தெடுக்கவும் —</option>
+          <option>தமிழ்</option>
+          <option>English</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="pages">பக்கங்கள் (Pages)</label>
+        <input id="pages" type="number" min="0" placeholder="24">
+      </div>
+
+      <div class="full">
+        <label for="fileId">Google Drive File ID *</label>
+        <input id="fileId" type="text" placeholder="1AbCdEfGhIjKlMnOpQrStUvWxYz">
+        <p class="hint">Share link: <code>https://drive.google.com/file/d/<b>FILE_ID</b>/view</code> — இதில் <b>FILE_ID</b> பகுதியை மட்டும் copy செய்யுங்கள்.</p>
+      </div>
+
+      <div class="full">
+        <label for="description">விளக்கம் (Description)</label>
+        <textarea id="description" placeholder="இந்த PDF பற்றிய சிறு விளக்கம்..."></textarea>
+      </div>
+    </div>
+
+    <div class="actions" style="margin-top:20px;">
+      <button class="btn-primary" type="button" onclick="addRecord()">➕ Add to Catalogue</button>
+      <button class="btn-ghost" type="button" onclick="clearForm()">Clear Form</button>
+    </div>
+  </div>
+
+  <!-- LIST -->
+  <div class="card">
+    <div class="list-head">
+      <h2>📚 சேர்க்கப்பட்ட PDF-கள்</h2>
+      <span class="count" id="count">0 items</span>
+    </div>
+    <div id="list"></div>
+
+    <div class="actions" style="margin-top:20px;">
+      <button class="btn-yellow" type="button" onclick="downloadCatalogue()">💾 Download catalogue.js</button>
+      <button class="btn-ghost" type="button" onclick="copyCatalogue()">📋 Copy as text</button>
+      <button class="btn-danger" type="button" onclick="clearAll()">🗑️ Clear All</button>
+    </div>
+    <p class="hint" style="margin-top:12px;">
+      <b>முக்கியம்:</b> Download செய்த <code>catalogue.js</code>-ஐ உங்கள் site folder-இல் உள்ள பழைய file-ஐ மேலெழுதுங்கள் (overwrite). பிறகு <code>pdf-library.html</code>-ஐ refresh செய்யுங்கள்.
+    </p>
+  </div>
+</div>
+
+<div class="status" id="status"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "ss_catalogue_v1";
+  var records = load();
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+  }
+
+  function toast(message) {
+    var el = document.getElementById("status");
+    el.textContent = message;
+    el.classList.add("show");
+    clearTimeout(el._timer);
+    el._timer = setTimeout(function () {
+      el.classList.remove("show");
+    }, 2400);
+  }
+
+  function escapeHtml(value) {
+    return String(value || "").replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function extractFileId(input) {
+    var value = (input || "").trim();
+    if (!value) return "";
+    // Full URL: /file/d/FILE_ID/ அல்லது ?id=FILE_ID
+    var urlMatch = value.match(/\/d\/([a-zA-Z0-9_-]+)/) || value.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (urlMatch) return urlMatch[1];
+    // ஏற்கனவே ID மட்டும்
+    return value;
+  }
+
+  function clearForm() {
+    ["title", "pages", "fileId", "description"].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+    ["subject", "category", "language"].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+  }
+
+  function addRecord() {
+    var title = document.getElementById("title").value.trim();
+    var subject = document.getElementById("subject").value;
+    var category = document.getElementById("category").value;
+    var language = document.getElementById("language").value;
+    var rawFileId = document.getElementById("fileId").value.trim();
+    var fileId = extractFileId(rawFileId);
+    var description = document.getElementById("description").value.trim();
+    var pages = Number(document.getElementById("pages").value) || 0;
+
+    // சரிபார்ப்பு
+    if (!title) { toast("❌ தலைப்பு தேவை"); return; }
+    if (!subject) { toast("❌ பாடம் தேர்ந்தெடுக்கவும்"); return; }
+    if (!category) { toast("❌ வகை தேர்ந்தெடுக்கவும்"); return; }
+    if (!language) { toast("❌ மொழி தேர்ந்தெடுக்கவும்"); return; }
+    if (!fileId) { toast("❌ Google Drive File ID தேவை"); return; }
+
+    var record = {
+      id: "pdf-" + Date.now() + "-" + Math.random().toString(36).slice(2, 7),
+      title: title,
+      subject: subject,
+      category: category,
+      language: language,
+      description: description,
+      uploadDate: new Date().toISOString().slice(0, 10),
+      status: "published",
+      fileUrl: "https://drive.google.com/file/d/" + fileId + "/preview",
+      downloadUrl: "https://drive.google.com/uc?export=download&id=" + fileId,
+      pages: pages,
+      driveFileId: fileId
+    };
+
+    records.push(record);
+    save();
+    renderList();
+    clearForm();
+    toast("✅ PDF சேர்க்கப்பட்டது");
+  }
+
+  function removeRecord(id) {
+    if (!confirm("இந்த PDF-ஐ நீக்கவா?")) return;
+    records = records.filter(function (r) { return r.id !== id; });
+    save();
+    renderList();
+    toast("🗑️ நீக்கப்பட்டது");
+  }
+
+  function renderList() {
+    var list = document.getElementById("list");
+    var count = document.getElementById("count");
+    count.textContent = records.length + (records.length === 1 ? " item" : " items");
+
+    if (!records.length) {
+      list.innerHTML = '<div class="empty">இன்னும் PDF எதுவும் சேர்க்கப்படவில்லை. மேலே உள்ள form-ஐப் பயன்படுத்துங்கள்.</div>';
+      return;
+    }
+
+    list.innerHTML = records.slice().reverse().map(function (r) {
+      return '<div class="item">' +
+        '<div>' +
+          '<p class="item-title">' + escapeHtml(r.title) + '</p>' +
+          '<p class="item-meta">' + escapeHtml(r.subject) + ' · ' + escapeHtml(r.uploadDate) +
+            (r.pages ? ' · ' + r.pages + ' pages' : '') + '</p>' +
+          '<div class="tags">' +
+            '<span>' + escapeHtml(r.category) + '</span>' +
+            '<span>' + escapeHtml(r.language) + '</span>' +
+            '<span>published</span>' +
+          '</div>' +
+        '</div>' +
+        '<button class="btn-danger" type="button" onclick="removeRecord(\'' + r.id + '\')">Remove</button>' +
+      '</div>';
+    }).join("");
+  }
+
+  function buildCatalogueContent() {
+    // pdf-library.html-இல் readCatalogue() "published" + fileUrl உள்ளவற்றை மட்டும் எடுக்கும்
+    return "/* Auto-generated by admin-upload.html — " + new Date().toISOString() + " */\n" +
+      "window.SMARTSTUDENT_CATALOGUE = " + JSON.stringify(records, null, 2) + ";\n";
+  }
+
+  function downloadCatalogue() {
+    if (!records.length) { toast("❌ முதலில் ஒரு PDF சேர்க்கவும்"); return; }
+    var content = buildCatalogueContent();
+    var blob = new Blob([content], { type: "text/javascript;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "catalogue.js";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast("💾 catalogue.js download ஆனது");
+  }
+
+  function copyCatalogue() {
+    if (!records.length) { toast("❌ முதலில் ஒரு PDF சேர்க்கவும்"); return; }
+    var content = buildCatalogueContent();
+    navigator.clipboard.writeText(content).then(function () {
+      toast("📋 Copy ஆனது");
+    }).catch(function () {
+      toast("❌ Copy தோல்வி");
+    });
+  }
+
+  function clearAll() {
+    if (!records.length) return;
+    if (!confirm("அனைத்து PDF-களையும் நீக்கவா? இதை மீட்க முடியாது.")) return;
+    records = [];
+    save();
+    renderList();
+    toast("🗑️ அனைத்தும் நீக்கப்பட்டது");
+  }
+
+  // Global exposure (inline onclick-க்காக)
+  window.addRecord = addRecord;
+  window.removeRecord = removeRecord;
+  window.clearForm = clearForm;
+  window.downloadCatalogue = downloadCatalogue;
+  window.copyCatalogue = copyCatalogue;
+  window.clearAll = clearAll;
+
+  renderList();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1001 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grade 09 PDF Learning Library — SmartStudent - Grade 09 PDFs</title>
+<meta name="description" content="Search and filter published Grade 09 PDFs by title, subject, category and language, then preview or download each resource.">
+<meta name="pd:project" content="SmartStudent - Grade 09 PDFs">
+<style data-pd-baseline="">button,input,select,textarea{font:inherit;color:inherit;line-height:inherit}textarea{display:block;resize:vertical}button,input,select,textarea{box-sizing:border-box;max-width:100%}textarea,select,input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]){padding:.55em .7em;border:1px solid color-mix(in srgb,currentColor 28%,transparent);border-radius:.4rem;background:transparent}</style>
+<style data-pd-page="">
+.library-page {
+  padding-block: clamp(40px, 7vw, 76px) 72px;
+}
+
+.library-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(260px, .7fr);
+  gap: clamp(28px, 6vw, 76px);
+  align-items: end;
+  padding: clamp(28px, 5vw, 56px);
+  border-radius: 24px;
+  background: var(--mist);
+  border: 1px solid var(--line);
+}
+
+.library-hero h1 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(2.3rem, 6vw, 5rem);
+  line-height: .98;
+  letter-spacing: -.065em;
+}
+
+.library-hero p {
+  max-width: 650px;
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 1.08rem;
+}
+
+.library-hero-note {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px;
+  border-left: 4px solid var(--yellow);
+  background: var(--paper);
+  border-radius: 14px;
+}
+
+.library-hero-note strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.05rem;
+}
+
+.library-hero-note span {
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.library-shell {
+  margin-top: 42px;
+}
+
+.library-toolbar {
+  padding: 24px;
+}
+
+.library-toolbar-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+.library-toolbar h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  letter-spacing: -.025em;
+}
+
+.library-toolbar-header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: .94rem;
+}
+
+.library-reset {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  color: var(--teal-dark);
+  background: var(--paper);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.library-reset:hover,
+.library-reset:focus-visible {
+  border-color: var(--teal);
+  background: var(--mist);
+}
+
+.library-filter-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.5fr) repeat(3, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+.library-field {
+  min-width: 0;
+}
+
+.library-field label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: .8rem;
+  font-weight: 800;
+}
+
+.library-field input,
+.library-field select {
+  width: 100%;
+  min-height: 46px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.library-field input:focus,
+.library-field select:focus {
+  outline: 3px solid rgba(15, 118, 110, .18);
+  border-color: var(--teal);
+}
+
+.library-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  min-height: 54px;
+  margin-top: 22px;
+}
+
+.library-result-count {
+  margin: 0;
+  font-weight: 800;
+}
+
+.library-result-count span {
+  color: var(--teal);
+}
+
+.library-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.library-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 4px 9px 4px 11px;
+  border: 1px solid #b7d3d3;
+  border-radius: 99px;
+  color: var(--teal-dark);
+  background: var(--mist);
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.library-chip button {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--teal-dark);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.library-chip button:hover,
+.library-chip button:focus-visible {
+  background: var(--paper);
+}
+
+.library-results {
+  margin-top: 30px;
+}
+
+.library-list {
+  display: grid;
+  gap: 16px;
+}
+
+.library-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.library-card-main {
+  min-width: 0;
+}
+
+.library-card-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.library-card h3 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  line-height: 1.2;
+  letter-spacing: -.03em;
+}
+
+.library-card-description {
+  max-width: 720px;
+  margin: 9px 0 14px;
+  color: var(--muted);
+}
+
+.library-card-details {
+  display: flex;
+  gap: 8px 18px;
+  flex-wrap: wrap;
+  margin: 0;
+  color: var(--muted);
+  font-size: .86rem;
+}
+
+.library-card-details strong {
+  color: var(--ink);
+}
+
+.library-card-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: 9px;
+  min-width: 156px;
+}
+
+.library-card-actions .button {
+  white-space: normal;
+  text-align: center;
+}
+
+.library-empty {
+  padding: clamp(30px, 6vw, 58px);
+  text-align: center;
+  border: 1px dashed #aac5c7;
+  border-radius: var(--radius);
+  background: var(--mist);
+}
+
+.library-empty-mark {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 15px;
+  border-radius: 15px;
+  color: var(--ink);
+  background: var(--yellow);
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.library-empty h2 {
+  margin: 0;
+  font-size: 1.55rem;
+}
+
+.library-empty p {
+  max-width: 540px;
+  margin: 9px auto 20px;
+  color: var(--muted);
+}
+
+.library-empty-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.library-loading {
+  display: grid;
+  gap: 14px;
+}
+
+.library-skeleton {
+  height: 174px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #f2f7f7;
+}
+
+.library-skeleton::after {
+  content: "";
+  display: block;
+  width: 45%;
+  height: 100%;
+  background: rgba(255,255,255,.72);
+  transform: translateX(-120%);
+  animation: library-shimmer 1.2s ease-in-out infinite;
+}
+
+.library-policy {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  margin-top: 42px;
+  padding: 22px 24px;
+  border-top: 3px solid var(--yellow);
+  background: var(--mist);
+}
+
+.library-policy-icon {
+  color: var(--teal);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.library-policy h2 {
+  margin: 0 0 5px;
+  font-size: 1.05rem;
+}
+
+.library-policy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .93rem;
+}
+
+.library-unavailable {
+  margin: 0;
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+@keyframes library-shimmer {
+  to {
+    transform: translateX(230%);
+  }
+}
+
+@media (max-width: 850px) {
+  .library-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .library-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .library-field:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 620px) {
+  .library-page {
+    padding-top: 28px;
+  }
+
+  .library-hero {
+    padding: 24px;
+  }
+
+  .library-toolbar {
+    padding: 18px;
+  }
+
+  .library-toolbar-header {
+    flex-direction: column;
+  }
+
+  .library-filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .library-field:first-child {
+    grid-column: auto;
+  }
+
+  .library-card {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .library-card-actions {
+    min-width: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .library-card-actions .button {
+    flex: 1 1 150px;
+  }
+
+  .library-policy {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .library-skeleton::after {
+    animation: none;
+  }
+}
+</style>
+<style id="pd-ds" data-pd-shared="design-system">:root {
+  --ink: #082f49;
+  --teal: #0f766e;
+  --teal-dark: #095c58;
+  --yellow: #f4b942;
+  --mist: #e8f1f2;
+  --line: #d7e4e5;
+  --paper: #ffffff;
+  --muted: #55717a;
+  --shadow: 0 14px 36px rgba(8, 47, 73, .10);
+  --radius: 18px;
+  --content: 1180px;
+  --sans: "Noto Sans Tamil", "Noto Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+img, svg { max-width: 100%; }
+a { color: inherit; }
+button, input { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.container {
+  width: min(calc(100% - 32px), var(--content));
+  margin-inline: auto;
+}
+.site-header {
+  position: relative;
+  z-index: 5;
+  border-bottom: 1px solid rgba(215, 228, 229, .9);
+  background: rgba(255,255,255,.96);
+}
+.header-inner {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-block: 14px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  font-size: 1.2rem;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  color: var(--ink);
+  background: var(--yellow);
+  font-weight: 900;
+}
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px 18px;
+  flex-wrap: wrap;
+}
+.site-nav a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: .92rem;
+  font-weight: 700;
+  transition: color .2s ease;
+}
+.site-nav a:hover, .site-nav a:focus-visible { color: var(--teal); }
+
+.button {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  text-decoration: none;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+.button:hover, .button:focus-visible { transform: translateY(-2px); }
+.button-primary { color: var(--ink); background: var(--yellow); }
+.button-primary:hover, .button-primary:focus-visible { background: #ffd166; }
+.button-secondary { color: var(--teal-dark); background: var(--paper); border-color: var(--line); }
+.button-secondary:hover, .button-secondary:focus-visible { border-color: var(--teal); }
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--teal);
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.section-heading { max-width: 650px; }
+.section-heading h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  line-height: 1.12;
+  letter-spacing: -.045em;
+}
+.section-heading p { margin: 0; color: var(--muted); }
+.surface {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.tag {
+  display: inline-flex;
+  padding: 4px 9px;
+  border-radius: 99px;
+  color: var(--teal-dark);
+  background: var(--mist);
+  font-size: .76rem;
+  font-weight: 800;
+}
+.language-toggle {
+  display: inline-flex;
+  padding: 4px;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 99px;
+  background: rgba(255,255,255,.12);
+}
+.language-toggle button {
+  min-height: 34px;
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 99px;
+  color: rgba(255,255,255,.75);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 800;
+}
+.language-toggle button[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--yellow);
+}
+.site-footer {
+  margin-top: 80px;
+  color: rgba(255,255,255,.8);
+  background: var(--ink);
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 28px;
+  flex-wrap: wrap;
+  padding-block: 34px;
+}
+.footer-inner p { max-width: 430px; margin: 0; }
+.footer-inner a { color: white; text-decoration: none; font-weight: 700; }
+.footer-note { color: rgba(255,255,255,.58); font-size: .9rem; }
+
+@media (max-width: 720px) {
+  .header-inner { align-items: flex-start; }
+  .site-nav { width: 100%; gap: 8px 14px; }
+  .site-nav a { font-size: .84rem; }
+  .container { width: min(calc(100% - 24px), var(--content)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}</style>
+<style data-pd-corrections="">fieldset>legend{float:none!important}</style>
+</head>
+<body data-pageduo-ele-id="e_CEVvh0nzYOx9">
+<header class="site-header" data-pageduo-ele-id="e_sH4SdScpmvIY">
+  <div class="container header-inner" data-pageduo-ele-id="e_F6KWRFDkQ8QC">
+    <a class="brand" href="index.html" aria-label="SmartStudent home" data-pageduo-ele-id="e_HmmDBU710EnO">
+      <span class="brand-mark" aria-hidden="true" data-pageduo-ele-id="e_t5iUPULpK2WQ">S9</span>
+      <span data-pageduo-ele-id="e_X2Z3GpFzjR9q">SmartStudent</span>
+    </a>
+    <nav class="site-nav" aria-label="Main navigation" data-pageduo-ele-id="e_kiMSOsw6ArKM">
+      <a href="index.html" title="Home" data-pageduo-ele-id="e_iWPly9jcawkn">Home</a>
+      <a href="subjects.html" title="Subjects" data-pageduo-ele-id="e_iQPsNi7qRaMZ">Subjects</a>
+      <a href="pdf-library.html" title="PDF Library" aria-current="page" data-pageduo-ele-id="e_syOgCaqje9dH">PDF Library</a>
+      <a href="pdf-preview.html" title="PDF Preview" data-pageduo-ele-id="e_cf3DVb9PJepx">PDF Preview</a>
+      <a href="admin.html" title="Admin" data-pageduo-ele-id="e_TQ1F4umszwgY">Admin</a>
+    </nav>
+  </div>
+</header>
+<main class="library-page" data-pageduo-ele-id="e_2JpfeS6sQ4xP">
+  <div class="container" data-pageduo-ele-id="e_lYMMCtRNkGu2">
+    <section class="library-hero" aria-labelledby="library-title" data-pageduo-ele-id="e_AYkfaBXKG6ZK">
+      <div data-pageduo-ele-id="e_ShwoxFwJfl2w">
+        <p class="eyebrow" data-pageduo-ele-id="e_DLMgTcbL3BaG">Grade 09 · Sri Lanka</p>
+        <h1 id="library-title" data-pageduo-ele-id="e_UmGaIfdbfL9e">Find the right PDF for your next study session.</h1>
+        <p data-pageduo-ele-id="e_J5LPr9LKHRGc">Search the administrator-published collection by title, subject, category, or language. Preview a document first, then download the published file when you are ready to study.</p>
+      </div>
+      <aside class="library-hero-note" aria-label="Catalogue information" data-pageduo-ele-id="e_JpIghxZt13xt">
+        <div data-pageduo-ele-id="e_knJ2HMmYp25p">
+          <strong data-pageduo-ele-id="e_P6d9PgCkfN6K">Document-first and bilingual</strong>
+          <span data-pageduo-ele-id="e_YiR53GQJiywZ">Resources are labelled in English or தமிழ் so you can choose materials that match your classroom and study preference.</span>
+        </div>
+        <span data-pageduo-ele-id="e_yPo2PzNapvXO">Only published resources appear in this student catalogue.</span>
+      </aside>
+    </section>
+
+    <section class="library-shell" aria-labelledby="search-heading" data-pageduo-ele-id="e_EhlCgTOTIzQ7">
+      <div class="library-toolbar surface" data-pageduo-ele-id="e_vUmleb2RWWjb">
+        <div class="library-toolbar-header" data-pageduo-ele-id="e_wgNvu9Q96UZW">
+          <div data-pageduo-ele-id="e_CzVZrYYJcwSe">
+            <h2 id="search-heading" data-pageduo-ele-id="e_n4WTtdz0OM0z">Search and filter the library</h2>
+            <p data-pageduo-ele-id="e_e3kZNFSqN2AJ">Results update as you type. Your search is not saved.</p>
+          </div>
+          <button class="library-reset" id="library-reset" type="button" data-pageduo-ele-id="e_3zGFkuTuQMvK">Clear all</button>
+        </div>
+
+        <div class="library-filter-grid" data-pageduo-ele-id="e_ztoOfKJ2O6d5">
+          <div class="library-field" data-pageduo-ele-id="e_HqMGj3YxuP6v">
+            <label for="library-search" data-pageduo-ele-id="e_ZN0yXbaJzY6l">PDF title</label>
+            <input id="library-search" type="search" autocomplete="off" placeholder="Search by title or words in a title" data-pageduo-ele-id="e_8CxOMhMgFgRL">
+          </div>
+          <div class="library-field" data-pageduo-ele-id="e_4DYMUj5GKKz9">
+            <label for="library-subject" data-pageduo-ele-id="e_9RbwWkM9ZHMn">Subject</label>
+            <select id="library-subject" data-pageduo-ele-id="e_VJeOMGgDtYgt">
+              <option value="" data-pageduo-ele-id="e_xeBHHaqT7WAx">All subjects</option>
+              <option value="தமிழ்" data-pageduo-ele-id="e_H2nnOjIa0FNm">தமிழ்</option>
+              <option value="English" data-pageduo-ele-id="e_eTtqJZLwG5vd">English</option>
+              <option value="Mathematics" data-pageduo-ele-id="e_aziNK7SmLf9y">Mathematics</option>
+              <option value="Science" data-pageduo-ele-id="e_bwogXGFlHZm7">Science</option>
+              <option value="History" data-pageduo-ele-id="e_sNGtt0Ktj3dI">History</option>
+              <option value="Geography" data-pageduo-ele-id="e_84yjyzijvnuy">Geography</option>
+              <option value="ICT" data-pageduo-ele-id="e_BXVLc6te0pWC">ICT</option>
+              <option value="Health" data-pageduo-ele-id="e_oo7EsB2JRhJ5">Health</option>
+              <option value="Civics" data-pageduo-ele-id="e_sQzfFDKtPLDI">Civics</option>
+              <option value="Sinhala" data-pageduo-ele-id="e_pU52nJjjaRci">Sinhala</option>
+              <option value="Music" data-pageduo-ele-id="e_DbAV6f5kNlYe">Music</option>
+              <option value="Saivanery" data-pageduo-ele-id="e_fMNEKwD1pKAI">Saivanery</option>
+              <option value="PTS" data-pageduo-ele-id="e_kpU83SJh9AYf">PTS</option>
+            </select>
+          </div>
+          <div class="library-field" data-pageduo-ele-id="e_E09Phb6uCOAK">
+            <label for="library-category" data-pageduo-ele-id="e_nv8Y2WvZqPcH">Category</label>
+            <select id="library-category" data-pageduo-ele-id="e_gB5cjvJiUhbU">
+              <option value="" data-pageduo-ele-id="e_7F0wljQi39i8">All categories</option>
+              <option value="Textbooks" data-pageduo-ele-id="e_Pe3i3JVbJi7g">Textbooks</option>
+              <option value="Short Notes" data-pageduo-ele-id="e_WL3YRNSDuGUX">Short Notes</option>
+              <option value="Full Notes" data-pageduo-ele-id="e_xKtI6lXX2UoC">Full Notes</option>
+              <option value="Teacher Guides" data-pageduo-ele-id="e_4RZKFSkgYP0C">Teacher Guides</option>
+              <option value="Exercises" data-pageduo-ele-id="e_RJ9H9kq08hnk">Exercises</option>
+              <option value="Past Papers" data-pageduo-ele-id="e_I7HNh4iobDhQ">Past Papers</option>
+              <option value="Model Papers" data-pageduo-ele-id="e_JFnYAdH5Chpk">Model Papers</option>
+              <option value="Revision Papers" data-pageduo-ele-id="e_r0wEXLl4Nzo9">Revision Papers</option>
+              <option value="Important Questions" data-pageduo-ele-id="e_1JuIpsh88UyO">Important Questions</option>
+            </select>
+          </div>
+          <div class="library-field" data-pageduo-ele-id="e_0HH5uAlGJQkX">
+            <label for="library-language" data-pageduo-ele-id="e_wwB59sNY8bgV">Language</label>
+            <select id="library-language" data-pageduo-ele-id="e_9osERl9FrI3c">
+              <option value="" data-pageduo-ele-id="e_eEEIpSUeXySc">All languages</option>
+              <option value="தமிழ்" data-pageduo-ele-id="e_92MHOrdmgzxE">தமிழ்</option>
+              <option value="English" data-pageduo-ele-id="e_FBnz9KktYdnd">English</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="library-status-row" aria-live="polite" data-pageduo-ele-id="e_AJIuF1WBIWyl">
+        <p class="library-result-count" id="library-result-count" data-pageduo-ele-id="e_F8ar63i3CYjP">Checking the published catalogue…</p>
+        <div class="library-chips" id="library-chips" aria-label="Active filters" data-pageduo-ele-id="e_WejvuN0f9Avo"></div>
+      </div>
+
+      <div class="library-results" id="library-results" aria-live="polite" data-pageduo-ele-id="e_mraBqPpItFWC">
+        <div class="library-loading" aria-label="Loading published resources" data-pageduo-ele-id="e_bYwNjxOk6pCa">
+          <div class="library-skeleton" data-pageduo-ele-id="e_7qdnyvUtKHC5"></div>
+          <div class="library-skeleton" data-pageduo-ele-id="e_d6GHR43rnJeM"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="library-policy" aria-labelledby="policy-heading" data-pageduo-ele-id="e_JfujHEubBrdb">
+      <div class="library-policy-icon" aria-hidden="true" data-pageduo-ele-id="e_i5TgLh8cGozh">✓</div>
+      <div data-pageduo-ele-id="e_0Bbv7vt4Ah5K">
+        <h2 id="policy-heading" data-pageduo-ele-id="e_ft5a2Loy0YHK">A clear publication policy</h2>
+        <p data-pageduo-ele-id="e_FUlBKZrmi1Zh">This library shows only resources marked <strong data-pageduo-ele-id="e_Tewfl5Hn3KrC">published</strong> in the connected catalogue. Draft, private, and unavailable records are excluded from student results. If a PDF link no longer works, please ask your teacher or school administrator for the current published copy.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var state = {
+    catalogue: [],
+    search: "",
+    subject: "",
+    category: "",
+    language: ""
+  };
+
+  function findElement(id) {
+    return document.getElementById(id);
+  }
+
+  function textValue(value) {
+    return typeof value === "string" ? value.trim() : "";
+  }
+
+  function readCatalogue() {
+    var source = window.SMARTSTUDENT_CATALOGUE;
+    if (!Array.isArray(source)) {
+      return [];
+    }
+
+    return source.filter(function (record) {
+      return record && textValue(record.status).toLowerCase() === "published" && textValue(record.fileUrl);
+    }).map(function (record) {
+      return {
+        id: textValue(record.id),
+        title: textValue(record.title),
+        subject: textValue(record.subject),
+        category: textValue(record.category),
+        language: textValue(record.language),
+        description: textValue(record.description),
+        uploadDate: textValue(record.uploadDate),
+        status: "Published",
+        fileUrl: textValue(record.fileUrl)
+      };
+    }).filter(function (record) {
+      return record.id && record.title;
+    });
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function (character) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+      }[character];
+    });
+  }
+
+  function activeFilters() {
+    return [
+      { key: "search", label: "Title: " + state.search, value: state.search },
+      { key: "subject", label: "Subject: " + state.subject, value: state.subject },
+      { key: "category", label: "Category: " + state.category, value: state.category },
+      { key: "language", label: "Language: " + state.language, value: state.language }
+    ].filter(function (filter) {
+      return filter.value;
+    });
+  }
+
+  function filteredCatalogue() {
+    var searchNeedle = state.search.toLowerCase();
+    return state.catalogue.filter(function (record) {
+      var titleMatch = !searchNeedle || record.title.toLowerCase().indexOf(searchNeedle) !== -1;
+      var subjectMatch = !state.subject || record.subject === state.subject;
+      var categoryMatch = !state.category || record.category === state.category;
+      var languageMatch = !state.language || record.language === state.language;
+      return titleMatch && subjectMatch && categoryMatch && languageMatch;
+    });
+  }
+
+  function renderChips() {
+    var chips = findElement("library-chips");
+    if (!chips) {
+      return;
+    }
+
+    chips.innerHTML = activeFilters().map(function (filter) {
+      return "<span class=\"library-chip\">" + escapeHtml(filter.label) +
+        "<button type=\"button\" data-clear-filter=\"" + escapeHtml(filter.key) + "\" aria-label=\"Remove " +
+        escapeHtml(filter.label) + " filter\">×</button></span>";
+    }).join("");
+
+    chips.querySelectorAll("[data-clear-filter]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var key = button.getAttribute("data-clear-filter");
+        if (key === "search") {
+          state.search = "";
+          var searchInput = findElement("library-search");
+          if (searchInput) {
+            searchInput.value = "";
+          }
+        } else {
+          state[key] = "";
+          var control = findElement("library-" + key);
+          if (control) {
+            control.value = "";
+          }
+        }
+        render();
+      });
+    });
+  }
+
+  function cardMarkup(record) {
+    var detailParts = [];
+    if (record.uploadDate) {
+      detailParts.push("<span>Uploaded <strong>" + escapeHtml(record.uploadDate) + "</strong></span>");
+    }
+    detailParts.push("<span>Publication status <strong>" + escapeHtml(record.status) + "</strong></span>");
+
+    return "<article class=\"library-card\">" +
+      "<div class=\"library-card-main\">" +
+        "<div class=\"library-card-meta\">" +
+          "<span class=\"tag\">" + escapeHtml(record.subject || "Subject not supplied") + "</span>" +
+          "<span class=\"tag\">" + escapeHtml(record.category || "Category not supplied") + "</span>" +
+          "<span class=\"tag\">" + escapeHtml(record.language || "Language not supplied") + "</span>" +
+        "</div>" +
+        "<h3>" + escapeHtml(record.title) + "</h3>" +
+        (record.description ? "<p class=\"library-card-description\">" + escapeHtml(record.description) + "</p>" : "") +
+        "<p class=\"library-card-details\">" + detailParts.join("") + "</p>" +
+      "</div>" +
+      "<div class=\"library-card-actions\">" +
+        "<a class=\"button button-secondary\" href=\"pdf-preview.html?id=" + encodeURIComponent(record.id) + "\">Preview PDF</a>" +
+        "<a class=\"button button-primary\" href=\"" + escapeHtml(record.fileUrl) + "\" download>Download PDF</a>" +
+      "</div>" +
+    "</article>";
+  }
+
+  function renderResults(records) {
+    var results = findElement("library-results");
+    if (!results) {
+      return;
+    }
+
+    if (!state.catalogue.length) {
+      results.innerHTML = "<div class=\"library-empty\">" +
+        "<div class=\"library-empty-mark\" aria-hidden=\"true\">PDF</div>" +
+        "<h2>No published PDFs are available yet</h2>" +
+        "<p>The catalogue is not connected to any published Grade 09 resources right now. Check back after an administrator publishes a PDF. No sample or unverified documents are shown here.</p>" +
+        "<p class=\"library-unavailable\">You can still use the subject pages to learn about the available resource areas.</p>" +
+      "</div>";
+      return;
+    }
+
+    if (!records.length) {
+      results.innerHTML = "<div class=\"library-empty\">" +
+        "<div class=\"library-empty-mark\" aria-hidden=\"true\">?</div>" +
+        "<h2>No PDFs match these filters</h2>" +
+        "<p>Try removing one filter, clearing the title search, or returning to the full published catalogue.</p>" +
+        "<div class=\"library-empty-actions\"><button class=\"button button-primary\" id=\"library-empty-clear\" type=\"button\">Clear filters</button></div>" +
+      "</div>";
+      var emptyClear = findElement("library-empty-clear");
+      if (emptyClear) {
+        emptyClear.addEventListener("click", clearFilters);
+      }
+      return;
+    }
+
+    results.innerHTML = "<div class=\"library-list\">" + records.map(cardMarkup).join("") + "</div>";
+  }
+
+  function render() {
+    var count = findElement("library-result-count");
+    var records = filteredCatalogue();
+    if (count) {
+      count.innerHTML = "<span>" + records.length + "</span> " + (records.length === 1 ? "published PDF" : "published PDFs");
+    }
+    renderChips();
+    renderResults(records);
+  }
+
+  function clearFilters() {
+    state.search = "";
+    state.subject = "";
+    state.category = "";
+    state.language = "";
+    ["search", "subject", "category", "language"].forEach(function (key) {
+      var control = findElement("library-" + key);
+      if (control) {
+        control.value = "";
+      }
+    });
+    render();
+  }
+
+  function readQuerySubject() {
+    var query = new URLSearchParams(window.location.search);
+    var subject = query.get("subject");
+    var subjectControl = findElement("library-subject");
+    if (subject && subjectControl && Array.prototype.some.call(subjectControl.options, function (option) {
+      return option.value === subject;
+    })) {
+      state.subject = subject;
+      subjectControl.value = subject;
+    }
+  }
+
+  function initialise() {
+    var searchInput = findElement("library-search");
+    var subjectControl = findElement("library-subject");
+    var categoryControl = findElement("library-category");
+    var languageControl = findElement("library-language");
+    var resetButton = findElement("library-reset");
+
+    state.catalogue = readCatalogue();
+    readQuerySubject();
+
+    if (searchInput) {
+      searchInput.addEventListener("input", function () {
+        state.search = searchInput.value.trim();
+        render();
+      });
+    }
+    if (subjectControl) {
+      subjectControl.addEventListener("change", function () {
+        state.subject = subjectControl.value;
+        render();
+      });
+    }
+    if (categoryControl) {
+      categoryControl.addEventListener("change", function () {
+        state.category = categoryControl.value;
+        render();
+      });
+    }
+    if (languageControl) {
+      languageControl.addEventListener("change", function () {
+        state.language = languageControl.value;
+        render();
+      });
+    }
+    if (resetButton) {
+      resetButton.addEventListener("click", clearFilters);
+    }
+
+    window.setTimeout(render, 180);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialise);
+  } else {
+    initialise();
+  }
+})();
+</script>
+<footer class="site-footer" data-pageduo-ele-id="e_GXeicxaorXfX">
+  <div class="container footer-inner" data-pageduo-ele-id="e_BRMUMFv12cB8">
+    <div data-pageduo-ele-id="e_4gVmm8Mt77YJ">
+      <a href="index.html" data-pageduo-ele-id="e_xPpSLnYIavjE">SmartStudent</a>
+      <p class="footer-note" data-pageduo-ele-id="e_F8p7vC1VrNNV">A focused Grade 09 learning-material library for Sri Lankan students, with published resources in Tamil and English.</p>
+    </div>
+    <p class="footer-note" data-pageduo-ele-id="e_DjV4IiJGeTcJ">Student access is limited to administrator-published PDFs. Google Drive management remains private to administrators.</p>
+  </div>
+</footer>
+
+</body></html>

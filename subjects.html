@@ -1,0 +1,962 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grade 09 Subjects and Materials — SmartStudent - Grade 09 PDFs</title>
+<meta name="description" content="Browse all 13 SmartStudent Grade 09 subjects and open their Tamil or English PDF learning materials.">
+<meta name="pd:project" content="SmartStudent - Grade 09 PDFs">
+<style data-pd-baseline="">button,input,select,textarea{font:inherit;color:inherit;line-height:inherit}textarea{display:block;resize:vertical}button,input,select,textarea{box-sizing:border-box;max-width:100%}textarea,select,input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=submit]):not([type=button]){padding:.55em .7em;border:1px solid color-mix(in srgb,currentColor 28%,transparent);border-radius:.4rem;background:transparent}</style>
+<style data-pd-page="">
+.subject-page {
+  overflow: clip;
+}
+
+.subject-hero {
+  color: #fff;
+  background: var(--ink);
+  padding: clamp(48px, 8vw, 88px) 0 clamp(42px, 7vw, 72px);
+}
+
+.subject-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
+  gap: clamp(28px, 6vw, 84px);
+  align-items: end;
+}
+
+.subject-hero h1 {
+  max-width: 780px;
+  margin: 0;
+  font-size: clamp(2.4rem, 6vw, 5.2rem);
+  line-height: .98;
+  letter-spacing: -.065em;
+}
+
+.subject-hero .eyebrow {
+  color: var(--yellow);
+}
+
+.subject-hero-copy {
+  max-width: 680px;
+  margin: 22px 0 0;
+  color: rgba(255,255,255,.78);
+  font-size: clamp(1.03rem, 2vw, 1.2rem);
+}
+
+.subject-scope {
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,.08);
+}
+
+.subject-scope strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--yellow);
+  font-size: 1.15rem;
+}
+
+.subject-scope p {
+  margin: 0;
+  color: rgba(255,255,255,.78);
+}
+
+.subject-main {
+  padding: clamp(44px, 7vw, 76px) 0;
+}
+
+.subject-toolbar {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.4fr) minmax(190px, .8fr) auto;
+  gap: 12px;
+  align-items: end;
+  margin: 28px 0 20px;
+}
+
+.subject-field {
+  display: grid;
+  gap: 7px;
+}
+
+.subject-field label {
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.subject-field input,
+.subject-field select {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 13px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  outline: 0;
+}
+
+.subject-field input:focus,
+.subject-field select:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(15,118,110,.16);
+}
+
+.subject-language {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 48px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.subject-language button {
+  min-height: 38px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.subject-language button:hover,
+.subject-language button:focus-visible {
+  color: var(--teal-dark);
+  background: var(--mist);
+}
+
+.subject-language button[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--yellow);
+}
+
+.subject-filter-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 0 0 22px;
+  padding: 14px 16px;
+  border-left: 4px solid var(--yellow);
+  background: var(--mist);
+}
+
+.subject-filter-summary p {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.subject-filter-summary strong {
+  color: var(--teal-dark);
+}
+
+.subject-reset {
+  color: var(--teal-dark);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.subject-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  min-height: 244px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: 0 8px 24px rgba(8,47,73,.06);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.subject-card:hover,
+.subject-card:focus-within {
+  border-color: rgba(15,118,110,.55);
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
+}
+
+.subject-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.subject-card h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  letter-spacing: -.025em;
+}
+
+.subject-number {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  color: var(--ink);
+  background: var(--yellow);
+  font-size: .8rem;
+  font-weight: 900;
+}
+
+.subject-card p {
+  flex: 1;
+  margin: 16px 0 20px;
+  color: var(--muted);
+  font-size: .96rem;
+}
+
+.subject-card .button {
+  align-self: flex-start;
+}
+
+.subject-empty {
+  grid-column: 1 / -1;
+  padding: 34px 20px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  text-align: center;
+}
+
+.material-guide {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: 18px;
+  margin-top: clamp(58px, 9vw, 100px);
+}
+
+.material-guide-intro {
+  padding: clamp(24px, 4vw, 38px);
+  border-radius: var(--radius);
+  color: #fff;
+  background: var(--teal);
+}
+
+.material-guide-intro h2 {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  line-height: 1.08;
+  letter-spacing: -.045em;
+}
+
+.material-guide-intro p {
+  margin: 0;
+  color: rgba(255,255,255,.84);
+}
+
+.material-guide-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 24px;
+  align-content: start;
+}
+
+.material-guide-list a {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--teal-dark);
+  background: var(--paper);
+  font-size: .9rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.material-guide-list a:hover,
+.material-guide-list a:focus-visible {
+  border-color: var(--teal);
+  background: var(--mist);
+}
+
+.directory-note {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, .8fr);
+  gap: 28px;
+  margin-top: 28px;
+  padding: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.directory-note h2 {
+  margin: 0 0 8px;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.directory-note p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.directory-note ul {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+}
+
+.directory-note li + li {
+  margin-top: 7px;
+}
+
+@media (max-width: 900px) {
+  .subject-hero-grid,
+  .material-guide,
+  .directory-note {
+    grid-template-columns: 1fr;
+  }
+
+  .subject-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .subject-toolbar {
+    grid-template-columns: minmax(0, 1fr) minmax(180px, .65fr);
+  }
+
+  .subject-language {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 560px) {
+  .subject-toolbar,
+  .subject-grid,
+  .material-guide-list {
+    grid-template-columns: 1fr;
+  }
+
+  .subject-language {
+    width: 100%;
+  }
+
+  .subject-language button {
+    flex: 1;
+  }
+
+  .subject-card {
+    min-height: 220px;
+  }
+}
+</style>
+<style id="pd-ds" data-pd-shared="design-system">:root {
+  --ink: #082f49;
+  --teal: #0f766e;
+  --teal-dark: #095c58;
+  --yellow: #f4b942;
+  --mist: #e8f1f2;
+  --line: #d7e4e5;
+  --paper: #ffffff;
+  --muted: #55717a;
+  --shadow: 0 14px 36px rgba(8, 47, 73, .10);
+  --radius: 18px;
+  --content: 1180px;
+  --sans: "Noto Sans Tamil", "Noto Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+img, svg { max-width: 100%; }
+a { color: inherit; }
+button, input { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.container {
+  width: min(calc(100% - 32px), var(--content));
+  margin-inline: auto;
+}
+.site-header {
+  position: relative;
+  z-index: 5;
+  border-bottom: 1px solid rgba(215, 228, 229, .9);
+  background: rgba(255,255,255,.96);
+}
+.header-inner {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-block: 14px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  font-size: 1.2rem;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  color: var(--ink);
+  background: var(--yellow);
+  font-weight: 900;
+}
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px 18px;
+  flex-wrap: wrap;
+}
+.site-nav a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: .92rem;
+  font-weight: 700;
+  transition: color .2s ease;
+}
+.site-nav a:hover, .site-nav a:focus-visible { color: var(--teal); }
+
+.button {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  text-decoration: none;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+.button:hover, .button:focus-visible { transform: translateY(-2px); }
+.button-primary { color: var(--ink); background: var(--yellow); }
+.button-primary:hover, .button-primary:focus-visible { background: #ffd166; }
+.button-secondary { color: var(--teal-dark); background: var(--paper); border-color: var(--line); }
+.button-secondary:hover, .button-secondary:focus-visible { border-color: var(--teal); }
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--teal);
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.section-heading { max-width: 650px; }
+.section-heading h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  line-height: 1.12;
+  letter-spacing: -.045em;
+}
+.section-heading p { margin: 0; color: var(--muted); }
+.surface {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.tag {
+  display: inline-flex;
+  padding: 4px 9px;
+  border-radius: 99px;
+  color: var(--teal-dark);
+  background: var(--mist);
+  font-size: .76rem;
+  font-weight: 800;
+}
+.language-toggle {
+  display: inline-flex;
+  padding: 4px;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 99px;
+  background: rgba(255,255,255,.12);
+}
+.language-toggle button {
+  min-height: 34px;
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 99px;
+  color: rgba(255,255,255,.75);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 800;
+}
+.language-toggle button[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--yellow);
+}
+.site-footer {
+  margin-top: 80px;
+  color: rgba(255,255,255,.8);
+  background: var(--ink);
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 28px;
+  flex-wrap: wrap;
+  padding-block: 34px;
+}
+.footer-inner p { max-width: 430px; margin: 0; }
+.footer-inner a { color: white; text-decoration: none; font-weight: 700; }
+.footer-note { color: rgba(255,255,255,.58); font-size: .9rem; }
+
+@media (max-width: 720px) {
+  .header-inner { align-items: flex-start; }
+  .site-nav { width: 100%; gap: 8px 14px; }
+  .site-nav a { font-size: .84rem; }
+  .container { width: min(calc(100% - 24px), var(--content)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}</style>
+<style data-pd-corrections="">fieldset>legend{float:none!important}</style>
+</head>
+<body data-pageduo-ele-id="e_5du0GhwDaVLM">
+<header class="site-header" data-pageduo-ele-id="e_9H8xSZOnd44L">
+  <div class="container header-inner" data-pageduo-ele-id="e_gkpRIE8yWin0">
+    <a class="brand" href="index.html" aria-label="SmartStudent home" data-pageduo-ele-id="e_gnDoEvw1TDgN">
+      <span class="brand-mark" aria-hidden="true" data-pageduo-ele-id="e_GIVuh1xDSWet">S9</span>
+      <span data-pageduo-ele-id="e_A5i47YhMH9BJ">SmartStudent</span>
+    </a>
+    <nav class="site-nav" aria-label="Main navigation" data-pageduo-ele-id="e_7PzaVdBfVyiO">
+      <a href="index.html" title="Home" data-pageduo-ele-id="e_mKljFWCyLuxV">Home</a>
+      <a href="subjects.html" title="Subjects" aria-current="page" data-pageduo-ele-id="e_KozafiwuaHmX">Subjects</a>
+      <a href="pdf-library.html" title="PDF Library" data-pageduo-ele-id="e_g3mv8OT70qgv">PDF Library</a>
+      <a href="pdf-preview.html" title="PDF Preview" data-pageduo-ele-id="e_XkxbH7tFFnbY">PDF Preview</a>
+      <a href="admin.html" title="Admin" data-pageduo-ele-id="e_ibvFJZ0IMwgZ">Admin</a>
+    </nav>
+  </div>
+</header>
+<main class="subject-page" data-pageduo-ele-id="e_1fwnVug099II">
+  <section class="subject-hero" aria-labelledby="subjects-title" data-pageduo-ele-id="e_TRPCmizrnBVB">
+    <div class="container subject-hero-grid" data-pageduo-ele-id="e_q8zdEZYEUAJV">
+      <div data-pageduo-ele-id="e_5sZolU7EXkyO">
+        <p class="eyebrow" data-copy="eyebrow" data-pageduo-ele-id="e_8VHPaGVNziqD">Grade 09 · Sri Lanka</p>
+        <h1 id="subjects-title" data-copy="title" data-pageduo-ele-id="e_r7IlaMSA819p">Find your subject. Open the right material.</h1>
+        <p class="subject-hero-copy" data-copy="intro" data-pageduo-ele-id="e_DtNgpTfjTVe2">A focused directory of the 13 Grade 09 subjects in SmartStudent. Choose a subject, then move straight to the published Tamil or English PDFs available for it.</p>
+      </div>
+      <aside class="subject-scope" aria-label="Directory scope" data-pageduo-ele-id="e_sdEsBSZDOW02">
+        <strong data-copy="scopeTitle" data-pageduo-ele-id="e_PDHF6qQwk0Zt">One level. Two languages. Clear retrieval.</strong>
+        <p data-copy="scopeText" data-pageduo-ele-id="e_bUbFoclJyq9r">This page is a subject directory, not a lesson or a personalised course. Use the filters to narrow the library before you open a document.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="subject-main container" aria-labelledby="directory-heading" data-pageduo-ele-id="e_e40SYsSlJZcT">
+    <div class="section-heading" data-pageduo-ele-id="e_iqini6LekHf4">
+      <p class="eyebrow" data-copy="directoryEyebrow" data-pageduo-ele-id="e_VBWMGKaAcfQc">Browse the directory</p>
+      <h2 id="directory-heading" data-copy="directoryTitle" data-pageduo-ele-id="e_3BG4O2gtb8Ab">13 subjects, one starting point</h2>
+      <p data-copy="directoryText" data-pageduo-ele-id="e_eP6wsY1tuTYB">Search by subject name or use a material category to decide where to continue. Every subject button opens the PDF library with that subject already selected.</p>
+    </div>
+
+    <div class="subject-toolbar" aria-label="Subject filters" data-pageduo-ele-id="e_IcZ6fzgNzP6K">
+      <div class="subject-field" data-pageduo-ele-id="e_wA6mBzAvY9bk">
+        <label for="subject-search" data-copy="searchLabel" data-pageduo-ele-id="e_LR7a2NwET2ek">Search subjects</label>
+        <input id="subject-search" type="search" autocomplete="off" placeholder="Try Science or ICT" data-copy-placeholder="searchPlaceholder" data-pageduo-ele-id="e_B9Wsv1ZxJMWL">
+      </div>
+      <div class="subject-field" data-pageduo-ele-id="e_KMBOpaXEMtrz">
+        <label for="material-category" data-copy="categoryLabel" data-pageduo-ele-id="e_0yGoLef6kKhn">Material category</label>
+        <select id="material-category" data-pageduo-ele-id="e_WozUZDgsg7KQ">
+          <option value="" data-copy="allMaterials" data-pageduo-ele-id="e_zYhByH2njQd1">All materials</option>
+          <option value="textbooks" data-pageduo-ele-id="e_y1kKfeB4BfBf">Textbooks</option>
+          <option value="short-notes" data-pageduo-ele-id="e_XPw89wQye9PV">Short Notes</option>
+          <option value="full-notes" data-pageduo-ele-id="e_oiFapjiDTYKt">Full Notes</option>
+          <option value="teacher-guides" data-pageduo-ele-id="e_ccP55L0lXlqw">Teacher Guides</option>
+          <option value="exercises" data-pageduo-ele-id="e_3WsJtauPv0uK">Exercises</option>
+          <option value="past-papers" data-pageduo-ele-id="e_iz6e8VJht0E1">Past Papers</option>
+          <option value="model-papers" data-pageduo-ele-id="e_LScJq7mRConp">Model Papers</option>
+          <option value="revision-papers" data-pageduo-ele-id="e_HYLZAFwHJqy8">Revision Papers</option>
+          <option value="important-questions" data-pageduo-ele-id="e_p65rEGiuu236">Important Questions</option>
+        </select>
+      </div>
+      <div class="subject-language" aria-label="Interface language" data-pageduo-ele-id="e_w5MwWxxFE9Vj">
+        <button type="button" data-language="en" aria-pressed="true" data-pageduo-ele-id="e_8iL6mShk9zYP">English</button>
+        <button type="button" data-language="ta" aria-pressed="false" data-pageduo-ele-id="e_Z3BroGewFFZu">தமிழ்</button>
+      </div>
+    </div>
+
+    <div class="subject-filter-summary" aria-live="polite" data-pageduo-ele-id="e_tvnxkGv18r6e">
+      <p data-pageduo-ele-id="e_uowYfDfdmIOx"><span data-copy="showing" data-pageduo-ele-id="e_mNuK2etVN5G9">Showing</span> <strong id="subject-count" data-pageduo-ele-id="e_YkbFaFHqeccD">13 subjects</strong><span data-copy="matching" data-pageduo-ele-id="e_eaADMzUl49KB"> matching your search.</span></p>
+      <button class="subject-reset" id="subject-reset" type="button" data-copy="reset" data-pageduo-ele-id="e_U1BFNPFmBhUm">Clear filters</button>
+    </div>
+
+    <ul class="subject-grid" id="subject-grid" data-pageduo-ele-id="e_egwljra5Od7Z">
+      <li class="subject-card" data-subject="தமிழ்" data-search="தமிழ் tamil" data-pageduo-ele-id="e_mKbpYnH0VXaT">
+        <div class="subject-card-top" data-pageduo-ele-id="e_9CxO0My6mkcG">
+          <h3 data-pageduo-ele-id="e_BglXHF7LU3yR">தமிழ்</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_cWDlj7X3VUFI">01</span>
+        </div>
+        <p data-description-en="Open published Tamil-subject materials for Grade 09, organised by the document type you need." data-description-ta="தரம் 09 தமிழ் பாடத்திற்கான வெளியிடப்பட்ட கற்றல் வளங்களை, தேவையான ஆவண வகைப்படி திறக்கவும்." data-pageduo-ele-id="e_z2Z5PGU3LV4k">Open published Tamil-subject materials for Grade 09, organised by the document type you need.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=%E0%AE%A4%E0%AE%AE%E0%AE%BF%E0%AE%B4%E0%AF%8D" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_SVVJbnzseCd9">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="English" data-search="english" data-pageduo-ele-id="e_lmZhJ0X2VqvY">
+        <div class="subject-card-top" data-pageduo-ele-id="e_jwc5wOgW0LD8">
+          <h3 data-pageduo-ele-id="e_8AchvbEqhBT5">English</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_1rWS8bugIb4a">02</span>
+        </div>
+        <p data-description-en="Find the published English-subject PDFs available for reading, practice or revision." data-description-ta="வாசிப்பு, பயிற்சி அல்லது மீளாய்வுக்குக் கிடைக்கும் ஆங்கிலப் பாட PDF வளங்களைக் காண்க." data-pageduo-ele-id="e_HHu3elo1CuQs">Find the published English-subject PDFs available for reading, practice or revision.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=English" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_iRf9rHB6CBYZ">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="Mathematics" data-search="mathematics math கணிதம்" data-pageduo-ele-id="e_YB9YgUmML50B">
+        <div class="subject-card-top" data-pageduo-ele-id="e_kPJVrzQMZ83y">
+          <h3 data-pageduo-ele-id="e_PIP8CdAiCEMg">Mathematics</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_htuyQuJ9BsDT">03</span>
+        </div>
+        <p data-description-en="Go to the Mathematics collection and choose the published resource format that suits your next task." data-description-ta="கணிதப் பிரிவில் உள்ள வெளியிடப்பட்ட வளங்களில் இருந்து உங்கள் அடுத்த பணிக்கான ஆவண வகையைத் தேர்ந்தெடுக்கவும்." data-pageduo-ele-id="e_KuZ7tpGyoeBG">Go to the Mathematics collection and choose the published resource format that suits your next task.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=Mathematics" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_8Mh5sUqhg8OA">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="Science" data-search="science விஞ்ஞானம்" data-pageduo-ele-id="e_yzbGtvCUpIc4">
+        <div class="subject-card-top" data-pageduo-ele-id="e_QxtFe0sNTzJM">
+          <h3 data-pageduo-ele-id="e_JlexPvKlRI7S">Science</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_OMtZk4JyCGEa">04</span>
+        </div>
+        <p data-description-en="Browse published Science PDFs, then filter further by notes, exercises or examination papers." data-description-ta="வெளியிடப்பட்ட விஞ்ஞான PDF வளங்களைப் பார்த்து, குறிப்புகள், பயிற்சிகள் அல்லது பரீட்சைத் தாள்களால் மேலும் வடிகட்டவும்." data-pageduo-ele-id="e_0mWcS1m4RyhE">Browse published Science PDFs, then filter further by notes, exercises or examination papers.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=Science" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_vkneCZHeDZ8S">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="History" data-search="history வரலாறு" data-pageduo-ele-id="e_MM8xFeNsnVMR">
+        <div class="subject-card-top" data-pageduo-ele-id="e_kiElwBS3uf78">
+          <h3 data-pageduo-ele-id="e_8eEOKTqVbhqc">History</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_DdSHYK29ohBO">05</span>
+        </div>
+        <p data-description-en="Open the published History collection and select the available document type from the library." data-description-ta="வெளியிடப்பட்ட வரலாற்று வளங்களைத் திறந்து, நூலகத்தில் கிடைக்கும் ஆவண வகையைத் தேர்ந்தெடுக்கவும்." data-pageduo-ele-id="e_Doo2St2OKGff">Open the published History collection and select the available document type from the library.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=History" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_bLKBwgUmDKEd">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="Geography" data-search="geography புவியியல்" data-pageduo-ele-id="e_Amd7mdBRW3HO">
+        <div class="subject-card-top" data-pageduo-ele-id="e_C2wB3IdyQCxx">
+          <h3 data-pageduo-ele-id="e_IdqKxNNpEdIF">Geography</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_tTorhqtCAtkB">06</span>
+        </div>
+        <p data-description-en="Use the Geography subject filter to reach its currently published Tamil or English learning materials." data-description-ta="புவியியல் பாடத்திற்கான தற்போது வெளியிடப்பட்ட தமிழ் அல்லது ஆங்கிலக் கற்றல் வளங்களை அடையுங்கள்." data-pageduo-ele-id="e_qTySlUi1xadX">Use the Geography subject filter to reach its currently published Tamil or English learning materials.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=Geography" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_t7ewyyqSTEyc">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="ICT" data-search="ict information communication technology தகவல் தொடர்பாடல் தொழில்நுட்பம்" data-pageduo-ele-id="e_V8CMe6mBg9Ws">
+        <div class="subject-card-top" data-pageduo-ele-id="e_uN3KvJg6O4G9">
+          <h3 data-pageduo-ele-id="e_TKn4rr6I3tjl">ICT</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_JgOvGODcjNhA">07</span>
+        </div>
+        <p data-description-en="Find published ICT documents and narrow the library by the kind of resource you want to open." data-description-ta="வெளியிடப்பட்ட ICT ஆவணங்களைக் கண்டு, திறக்க விரும்பும் வள வகையால் நூலகத்தைச் சுருக்கவும்." data-pageduo-ele-id="e_KibdwBHRn688">Find published ICT documents and narrow the library by the kind of resource you want to open.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=ICT" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_xdWBUBRIaU3o">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="Health" data-search="health சுகாதாரம்" data-pageduo-ele-id="e_CqwpNbExamFG">
+        <div class="subject-card-top" data-pageduo-ele-id="e_gKHFyjO82w2h">
+          <h3 data-pageduo-ele-id="e_WT407XlHwUtx">Health</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_ShFz6yF2v2e0">08</span>
+        </div>
+        <p data-description-en="Enter the Health collection to review the published documents available in the library." data-description-ta="நூலகத்தில் கிடைக்கும் வெளியிடப்பட்ட சுகாதாரப் பாட ஆவணங்களைப் பார்வையிடுங்கள்." data-pageduo-ele-id="e_Qz454L3CDVvs">Enter the Health collection to review the published documents available in the library.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=Health" data-action="open" data-action-ta="வளங்களைத் திறக்கவும்" data-action-en="Open materials" data-pageduo-ele-id="e_3HDAE0fQLtmk">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="Civics" data-search="civics குடியியல்" data-pageduo-ele-id="e_Q3BjqbgwWTp3">
+        <div class="subject-card-top" data-pageduo-ele-id="e_S9lSeZclJtNQ">
+          <h3 data-pageduo-ele-id="e_VUmyWkLkTkHx">Civics</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_tly2HdSVDrIs">09</span>
+        </div>
+        <p data-description-en="Browse published Civics resources and choose the material category that matches your purpose." data-description-ta="வெளியிடப்பட்ட குடியியல் வளங்களைப் பார்த்து, உங்கள் நோக்கத்திற்கேற்ற வள வகையைத் தேர்ந்தெடுக்கவும்." data-pageduo-ele-id="e_k1p1PXBRyBqX">Browse published Civics resources and choose the material category that matches your purpose.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=Civics" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_CqMM28K2N4BN">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="Sinhala" data-search="sinhala සිංහල" data-pageduo-ele-id="e_Xy3rEWPv8mNb">
+        <div class="subject-card-top" data-pageduo-ele-id="e_bfHjUdfjP1dB">
+          <h3 data-pageduo-ele-id="e_AlirZnI1szhn">Sinhala</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_FwtWVzjRfCH5">10</span>
+        </div>
+        <p data-description-en="Open the Sinhala subject collection and continue to the published PDFs listed there." data-description-ta="சிங்களப் பாடப் பிரிவைத் திறந்து, அங்கு பட்டியலிடப்பட்டுள்ள வெளியிடப்பட்ட PDF வளங்களைப் பார்வையிடவும்." data-pageduo-ele-id="e_Z2uyAiYQ0sQr">Open the Sinhala subject collection and continue to the published PDFs listed there.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=Sinhala" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_Au2YLh8e1NL8">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="Music" data-search="music இசை" data-pageduo-ele-id="e_c722Okc0jvF0">
+        <div class="subject-card-top" data-pageduo-ele-id="e_qktCK52XlntZ">
+          <h3 data-pageduo-ele-id="e_c406iHHIUeKt">Music</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_jH3eUBdoCFkW">11</span>
+        </div>
+        <p data-description-en="Find the published Music documents currently available through the Grade 09 library." data-description-ta="தரம் 09 நூலகத்தில் தற்போது கிடைக்கும் வெளியிடப்பட்ட இசைப் பாட ஆவணங்களைக் காண்க." data-pageduo-ele-id="e_FX6Os39gPNE8">Find the published Music documents currently available through the Grade 09 library.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=Music" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_pEFghxFuPvOI">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="Saivanery" data-search="saivanery சைவநெறி" data-pageduo-ele-id="e_q9WiznElXi4k">
+        <div class="subject-card-top" data-pageduo-ele-id="e_JtKHZrGIbIms">
+          <h3 data-pageduo-ele-id="e_NrHUhMk6GZin">Saivanery</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_MzMeZ25am7NA">12</span>
+        </div>
+        <p data-description-en="Go to the Saivanery collection and use the library filters to locate a published PDF." data-description-ta="சைவநெறிப் பிரிவிற்குச் சென்று, வெளியிடப்பட்ட PDF வளத்தைக் கண்டறிய நூலக வடிகட்டிகளைப் பயன்படுத்தவும்." data-pageduo-ele-id="e_U4K1fGwuvE9K">Go to the Saivanery collection and use the library filters to locate a published PDF.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=Saivanery" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_zBIyLe0LQN6E">Open materials</a>
+      </li>
+
+      <li class="subject-card" data-subject="PTS" data-search="pts practical technical studies நடைமுறை தொழில்நுட்பக் கற்கை" data-pageduo-ele-id="e_6TeuR6ciAu9f">
+        <div class="subject-card-top" data-pageduo-ele-id="e_81Bce6NLU7MO">
+          <h3 data-pageduo-ele-id="e_KLzX2fbNMOJH">PTS</h3>
+          <span class="subject-number" aria-hidden="true" data-pageduo-ele-id="e_1u12fmirWLwp">13</span>
+        </div>
+        <p data-description-en="Open the PTS collection and check the published resource categories offered for this subject." data-description-ta="PTS பிரிவைத் திறந்து, இந்தப் பாடத்திற்காக வழங்கப்பட்டுள்ள வெளியிடப்பட்ட வள வகைகளைப் பார்வையிடவும்." data-pageduo-ele-id="e_2JvDmlPNlV4E">Open the PTS collection and check the published resource categories offered for this subject.</p>
+        <a class="button button-secondary" href="pdf-library.html?subject=PTS" data-action="open" data-action-en="Open materials" data-action-ta="வளங்களைத் திறக்கவும்" data-pageduo-ele-id="e_fvux02mnHJ8c">Open materials</a>
+      </li>
+
+      <li class="subject-empty" id="subject-empty" hidden="" data-copy="empty" data-pageduo-ele-id="e_ZyA4qSm26ysG">No subjects match that search. Try a subject name such as Science, English or ICT.</li>
+    </ul>
+
+    <section class="material-guide" aria-labelledby="material-guide-title" data-pageduo-ele-id="e_ht8sQo61Kcms">
+      <div class="material-guide-intro" data-pageduo-ele-id="e_QYzT8uN201K6">
+        <p class="eyebrow" data-copy="guideEyebrow" data-pageduo-ele-id="e_bDIUbNakldKk">Choose the document type</p>
+        <h2 id="material-guide-title" data-copy="guideTitle" data-pageduo-ele-id="e_zNAlbHXuDIgx">The subject is only the first filter.</h2>
+        <p data-copy="guideText" data-pageduo-ele-id="e_SuBqctPOuvCB">Use one of these library categories to move from a broad subject search to the kind of published PDF you need.</p>
+      </div>
+      <div class="surface material-guide-list" aria-label="Material categories" data-pageduo-ele-id="e_kOuMED26bJuX">
+        <a href="pdf-library.html?category=textbooks" data-pageduo-ele-id="e_VK2wY1jMOomQ">Textbooks</a>
+        <a href="pdf-library.html?category=short-notes" data-pageduo-ele-id="e_JshcyRP23mM3">Short Notes</a>
+        <a href="pdf-library.html?category=full-notes" data-pageduo-ele-id="e_8kYlVOjYQJHn">Full Notes</a>
+        <a href="pdf-library.html?category=teacher-guides" data-pageduo-ele-id="e_zzlwMEd41Bmu">Teacher Guides</a>
+        <a href="pdf-library.html?category=exercises" data-pageduo-ele-id="e_gT0VvXVVGhcG">Exercises</a>
+        <a href="pdf-library.html?category=past-papers" data-pageduo-ele-id="e_W1sF4bOEAxb2">Past Papers</a>
+        <a href="pdf-library.html?category=model-papers" data-pageduo-ele-id="e_TUruGV5F58F8">Model Papers</a>
+        <a href="pdf-library.html?category=revision-papers" data-pageduo-ele-id="e_IxFl1lHvYSbH">Revision Papers</a>
+        <a href="pdf-library.html?category=important-questions" data-pageduo-ele-id="e_OlVLXayGL6fB">Important Questions</a>
+      </div>
+    </section>
+
+    <section class="directory-note" aria-labelledby="directory-note-title" data-pageduo-ele-id="e_6HbW4TVBq2jm">
+      <div data-pageduo-ele-id="e_9puiW9jjvgJ7">
+        <p class="eyebrow" data-copy="legendEyebrow" data-pageduo-ele-id="e_tDNZgyGYPZX0">A simple way to use it</p>
+        <h2 id="directory-note-title" data-copy="legendTitle" data-pageduo-ele-id="e_vc8fanvXKoOF">Subject → category → PDF preview</h2>
+        <p data-copy="legendText" data-pageduo-ele-id="e_DDOp7EwfsQZH">Start with a subject above. In the library, refine by language or material category. When you find a result, open its preview page before reading or downloading the document.</p>
+      </div>
+      <ul data-pageduo-ele-id="e_ItDzbVTGaXY8">
+        <li data-copy="legendOne" data-pageduo-ele-id="e_qlL5ffqsFUDG">Tamil and English are available as library filters where published.</li>
+        <li data-copy="legendTwo" data-pageduo-ele-id="e_dr8sqIgTqqON">The directory does not promise that every category exists for every subject.</li>
+        <li data-copy="legendThree" data-pageduo-ele-id="e_ztRmeSkWvAZ0">Only administrator-published PDFs appear in the student library.</li>
+      </ul>
+    </section>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var searchInput = document.getElementById("subject-search");
+  var categorySelect = document.getElementById("material-category");
+  var subjectGrid = document.getElementById("subject-grid");
+  var subjectCount = document.getElementById("subject-count");
+  var emptyMessage = document.getElementById("subject-empty");
+  var resetButton = document.getElementById("subject-reset");
+  var languageButtons = document.querySelectorAll("[data-language]");
+  var cards = subjectGrid ? subjectGrid.querySelectorAll(".subject-card") : [];
+  var currentLanguage = "en";
+
+  var copy = {
+    en: {
+      eyebrow: "Grade 09 · Sri Lanka",
+      title: "Find your subject. Open the right material.",
+      intro: "A focused directory of the 13 Grade 09 subjects in SmartStudent. Choose a subject, then move straight to the published Tamil or English PDFs available for it.",
+      scopeTitle: "One level. Two languages. Clear retrieval.",
+      scopeText: "This page is a subject directory, not a lesson or a personalised course. Use the filters to narrow the library before you open a document.",
+      directoryEyebrow: "Browse the directory",
+      directoryTitle: "13 subjects, one starting point",
+      directoryText: "Search by subject name or use a material category to decide where to continue. Every subject button opens the PDF library with that subject already selected.",
+      searchLabel: "Search subjects",
+      searchPlaceholder: "Try Science or ICT",
+      categoryLabel: "Material category",
+      allMaterials: "All materials",
+      showing: "Showing",
+      matching: " matching your search.",
+      reset: "Clear filters",
+      empty: "No subjects match that search. Try a subject name such as Science, English or ICT.",
+      guideEyebrow: "Choose the document type",
+      guideTitle: "The subject is only the first filter.",
+      guideText: "Use one of these library categories to move from a broad subject search to the kind of published PDF you need.",
+      legendEyebrow: "A simple way to use it",
+      legendTitle: "Subject → category → PDF preview",
+      legendText: "Start with a subject above. In the library, refine by language or material category. When you find a result, open its preview page before reading or downloading the document.",
+      legendOne: "Tamil and English are available as library filters where published.",
+      legendTwo: "The directory does not promise that every category exists for every subject.",
+      legendThree: "Only administrator-published PDFs appear in the student library."
+    },
+    ta: {
+      eyebrow: "தரம் 09 · இலங்கை",
+      title: "உங்கள் பாடத்தைத் தேர்ந்தெடுத்து, சரியான வளத்தைத் திறக்கவும்.",
+      intro: "SmartStudent இல் உள்ள தரம் 09 இன் 13 பாடங்களுக்கான தெளிவான அடைவு. ஒரு பாடத்தைத் தேர்ந்தெடுத்து, வெளியிடப்பட்ட தமிழ் அல்லது ஆங்கில PDF வளங்களுக்குச் செல்லுங்கள்.",
+      scopeTitle: "ஒரு தரம். இரண்டு மொழிகள். தெளிவான தேடல்.",
+      scopeText: "இது பாட அடைவு; பாடம் கற்பிக்கும் பக்கம் அல்லது தனிப்பயன் பாடநெறி அல்ல. ஆவணத்தைத் திறப்பதற்கு முன் வடிகட்டிகளைப் பயன்படுத்தி நூலகத்தைச் சுருக்கவும்.",
+      directoryEyebrow: "அடைவைக் காண்க",
+      directoryTitle: "13 பாடங்கள், ஒரு தொடக்கப் புள்ளி",
+      directoryText: "பாடத்தின் பெயரால் தேடுங்கள் அல்லது தொடர வேண்டிய வள வகையைத் தேர்ந்தெடுக்கவும். ஒவ்வொரு பாடப் பொத்தானும் அந்தப் பாடம் தேர்ந்தெடுக்கப்பட்ட PDF நூலகத்தைத் திறக்கும்.",
+      searchLabel: "பாடங்களைத் தேடுக",
+      searchPlaceholder: "Science அல்லது ICT எனத் தேடுக",
+      categoryLabel: "வள வகை",
+      allMaterials: "அனைத்து வளங்களும்",
+      showing: "காட்டப்படுவது",
+      matching: " உங்கள் தேடலுடன் பொருந்துகிறது.",
+      reset: "வடிகட்டிகளை அழிக்கவும்",
+      empty: "இந்தத் தேடலுடன் எந்தப் பாடமும் பொருந்தவில்லை. Science, English அல்லது ICT போன்ற பெயரை முயற்சிக்கவும்.",
+      guideEyebrow: "ஆவண வகையைத் தேர்ந்தெடுக்கவும்",
+      guideTitle: "பாடம் முதல் வடிகட்டி மட்டுமே.",
+      guideText: "பாடத் தேடலிலிருந்து உங்களுக்குத் தேவையான வெளியிடப்பட்ட PDF வகைக்குச் செல்ல இந்த நூலக வகைகளில் ஒன்றைப் பயன்படுத்தவும்.",
+      legendEyebrow: "பயன்படுத்தும் எளிய முறை",
+      legendTitle: "பாடம் → வகை → PDF முன்னோட்டம்",
+      legendText: "மேலே ஒரு பாடத்துடன் தொடங்குங்கள். நூலகத்தில் மொழி அல்லது வள வகையால் தேடலைச் சுருக்கவும். முடிவைக் கண்டதும், ஆவணத்தைப் படிக்கும் அல்லது பதிவிறக்கும் முன் அதன் முன்னோட்டத்தைத் திறக்கவும்.",
+      legendOne: "வெளியிடப்பட்டுள்ள இடங்களில் தமிழ் மற்றும் ஆங்கிலம் நூலக வடிகட்டிகளாகக் கிடைக்கும்.",
+      legendTwo: "ஒவ்வொரு பாடத்திற்கும் ஒவ்வொரு வள வகையும் இருக்கும் என்று இந்த அடைவு உறுதி செய்யாது.",
+      legendThree: "நிர்வாகியால் வெளியிடப்பட்ட PDF வளங்கள் மட்டுமே மாணவர் நூலகத்தில் தோன்றும்."
+    }
+  };
+
+  function updateCopy() {
+    var activeCopy = copy[currentLanguage];
+    document.querySelectorAll("[data-copy]").forEach(function (element) {
+      var key = element.getAttribute("data-copy");
+      if (activeCopy[key]) {
+        element.textContent = activeCopy[key];
+      }
+    });
+    document.querySelectorAll("[data-copy-placeholder]").forEach(function (element) {
+      var key = element.getAttribute("data-copy-placeholder");
+      if (activeCopy[key]) {
+        element.setAttribute("placeholder", activeCopy[key]);
+      }
+    });
+    document.querySelectorAll("[data-description-en]").forEach(function (element) {
+      var description = element.getAttribute("data-description-" + currentLanguage);
+      if (description) {
+        element.textContent = description;
+      }
+    });
+    document.querySelectorAll("[data-action]").forEach(function (element) {
+      var action = element.getAttribute("data-action-" + currentLanguage);
+      if (action) {
+        element.textContent = action;
+      }
+    });
+    var selectedCategory = categorySelect ? categorySelect.value : "";
+    var categoryOptions = categorySelect ? categorySelect.options : [];
+    for (var index = 0; index < categoryOptions.length; index += 1) {
+      var option = categoryOptions[index];
+      var optionKey = option.getAttribute("data-copy");
+      if (optionKey && activeCopy[optionKey]) {
+        option.textContent = activeCopy[optionKey];
+      }
+    }
+    if (categorySelect && selectedCategory) {
+      categorySelect.value = selectedCategory;
+    }
+    languageButtons.forEach(function (button) {
+      button.setAttribute("aria-pressed", button.getAttribute("data-language") === currentLanguage ? "true" : "false");
+    });
+    renderCards();
+  }
+
+  function renderCards() {
+    var query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+    var visibleCount = 0;
+    cards.forEach(function (card) {
+      var haystack = (card.getAttribute("data-search") || "").toLowerCase();
+      var matches = !query || haystack.indexOf(query) !== -1;
+      card.hidden = !matches;
+      if (matches) {
+        visibleCount += 1;
+      }
+    });
+    if (subjectCount) {
+      subjectCount.textContent = visibleCount + (currentLanguage === "ta" ? " பாடங்கள்" : (visibleCount === 1 ? " subject" : " subjects"));
+    }
+    if (emptyMessage) {
+      emptyMessage.hidden = visibleCount !== 0;
+    }
+  }
+
+  function clearFilters() {
+    if (searchInput) {
+      searchInput.value = "";
+    }
+    if (categorySelect) {
+      categorySelect.value = "";
+    }
+    renderCards();
+    if (searchInput) {
+      searchInput.focus();
+    }
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", renderCards);
+  }
+  if (categorySelect) {
+    categorySelect.addEventListener("change", function () {
+      var selectedCategory = categorySelect.value;
+      if (selectedCategory) {
+        window.location.href = "pdf-library.html?category=" + encodeURIComponent(selectedCategory);
+      }
+    });
+  }
+  if (resetButton) {
+    resetButton.addEventListener("click", clearFilters);
+  }
+  languageButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      var selectedLanguage = button.getAttribute("data-language");
+      if (selectedLanguage === "en" || selectedLanguage === "ta") {
+        currentLanguage = selectedLanguage;
+        updateCopy();
+      }
+    });
+  });
+  updateCopy();
+}());
+</script>
+<footer class="site-footer" data-pageduo-ele-id="e_QsQJmONXiyW5">
+  <div class="container footer-inner" data-pageduo-ele-id="e_AOkQTkb8rYUK">
+    <div data-pageduo-ele-id="e_tUVQs1WnBXSs">
+      <a href="index.html" data-pageduo-ele-id="e_hRACdHsIATCr">SmartStudent</a>
+      <p class="footer-note" data-pageduo-ele-id="e_BkoRseJmaglL">A focused Grade 09 learning-material library for Sri Lankan students, with published resources in Tamil and English.</p>
+    </div>
+    <p class="footer-note" data-pageduo-ele-id="e_PeCnn3dUTM4H">Student access is limited to administrator-published PDFs. Google Drive management remains private to administrators.</p>
+  </div>
+</footer>
+
+</body></html>
